@@ -40,7 +40,7 @@ export const routes: TRoute[] = [
   },
   {
     Element: <AuthLayout />,
-    path: "auth",
+    path: "/auth",
     childrens: [
       {
         Element: <AuthPage />,
