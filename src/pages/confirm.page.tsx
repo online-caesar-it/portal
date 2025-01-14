@@ -1,5 +1,7 @@
+import Confirm from "~/widgets/auth/ui/confirm";
+
 const ConfirmPage = () => {
-  return <div>ConfirmPage</div>;
+  return <Confirm />;
 };
 
 export default ConfirmPage;

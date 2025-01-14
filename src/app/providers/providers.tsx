@@ -1,11 +1,14 @@
 import Mantine from "./mantine";
 import RoutesProvider from "./routes";
+import RtkQuery from "./rtk-query";
 
 const Providers = () => {
   return (
-    <Mantine>
-      <RoutesProvider />
-    </Mantine>
+    <RtkQuery>
+      <Mantine>
+        <RoutesProvider />
+      </Mantine>
+    </RtkQuery>
   );
 };
 

@@ -1,5 +1,11 @@
+import Main from "~/widgets/main/ui/main";
+
 const MainPage = () => {
-  return <div>MainPage</div>;
+  return (
+    <div>
+      <Main />
+    </div>
+  );
 };
 
 export default MainPage;

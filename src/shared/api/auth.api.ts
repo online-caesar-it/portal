@@ -47,6 +47,7 @@ const verifySignUp = async (
 const loginByEmail = async ({ email }: { email?: string }) => {
   return await api.post("/auth/sign-in/by-email", {
     email,
+    isPortal: true,
   });
 };
 const verifySignIn = async (

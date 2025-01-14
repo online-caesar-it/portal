@@ -4,6 +4,7 @@ import MainLayout from "~/app/layouts/main-layout";
 import ProtectedLayout from "~/app/layouts/protected-layout";
 import AuthPage from "~/pages/auth.page";
 import ChatsPage from "~/pages/chats.page";
+import ConfirmPage from "~/pages/confirm.page";
 import MainPage from "~/pages/main.page";
 
 export type TRoute = {
@@ -45,6 +46,10 @@ export const routes: TRoute[] = [
       {
         Element: <AuthPage />,
         path: "sign-in",
+      },
+      {
+        Element: <ConfirmPage />,
+        path: "confirm",
       },
     ],
   },
