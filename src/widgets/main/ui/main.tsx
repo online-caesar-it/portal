@@ -4,7 +4,7 @@ import { useSession } from "~/shared/hooks/useSession";
 import If from "~/shared/lib/components/if";
 
 const Main = () => {
-  const { session, isLoading } = useSession();
+  const { isLoading } = useSession();
   useCheckedAuth();
 
   return (
