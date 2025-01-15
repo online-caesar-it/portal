@@ -4,6 +4,7 @@ import { ChatEvents } from "../enums/ws-enum";
 import { TMessageType } from "../types/chat-type";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { chatApi } from "~/entities/chat/api/chat.api";
+import { env } from "~/env";
 
 export const useWebSocketChat = (chatId: string) => {
   const [ws, setWs] = useState<WebSocket | null>(null);
@@ -11,7 +12,7 @@ export const useWebSocketChat = (chatId: string) => {
   const token = localStorageToken.getAccessToken();
 
   useEffect(() => {
-    const wsUrl = new URL(`ws://127.0.0.1:5000/chat/ws`);
+    const wsUrl = new URL(env.VITE_WS_URL);
     wsUrl.searchParams.append("access_token", token || "");
 
     const socket = new WebSocket(wsUrl.toString(), "protocol");
