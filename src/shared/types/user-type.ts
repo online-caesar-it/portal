@@ -14,4 +14,5 @@ export type TUser = {
   role: TRoleUserType;
   groupId?: string;
   config: TUserConfig;
+  avatar: string;
 };
