@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const EnvSchema = z.object({
   VITE_API_URL: z.string().min(1, "VITE_API_URL is required"),
+  VITE_WS_URL: z.string().min(1, "VITE_WS_URL is required"),
 });
 
 const envObj = {
