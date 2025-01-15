@@ -9,7 +9,7 @@ const envObj = {
   VITE_API_URL: import.meta.env.VITE_API_URL,
   VITE_WS_URL: import.meta.env.VITE_WS_URL,
 };
-let _env;
+let _env = {} as z.infer<typeof EnvSchema>;
 
 try {
   _env = EnvSchema.parse(envObj);

@@ -12,7 +12,7 @@ export const useWebSocketChat = (chatId: string) => {
   const token = localStorageToken.getAccessToken();
 
   useEffect(() => {
-    const wsUrl = new URL(env?.VITE_WS_URL || "");
+    const wsUrl = new URL(env.VITE_WS_URL);
     wsUrl.searchParams.append("access_token", token || "");
 
     const socket = new WebSocket(wsUrl.toString(), "protocol");
