@@ -9,6 +9,7 @@ export const useFormChat = () => {
       userIds: [],
       name: "",
       description: "",
+      type: "",
     },
   });
 

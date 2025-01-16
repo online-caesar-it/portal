@@ -13,9 +13,9 @@ const MessageItem = ({ item, user }: { item: TMessageType; user?: TUser }) => {
             {item?.text}
           </Text>
           <Text size="sm" bd={"white"}>
-            {item?.owner?.firstName}
+            Отправитель: {item?.interlocutor?.firstName}
           </Text>
-          <Text size="xs" color="dimmed" style={{ alignSelf: "flex-end" }}>
+          <Text size="xs" color="dimmed">
             {moment(item.createdAt).format("MMMM DD HH:MM")}
           </Text>
         </Flex>

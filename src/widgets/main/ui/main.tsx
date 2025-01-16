@@ -1,11 +1,9 @@
 import { Loader } from "@mantine/core";
-import { useCheckedAuth } from "~/shared/hooks/useCheckedAuth";
 import { useSession } from "~/shared/hooks/useSession";
 import If from "~/shared/lib/components/if";
 
 const Main = () => {
   const { isLoading } = useSession();
-  useCheckedAuth();
 
   return (
     <If when={isLoading}>

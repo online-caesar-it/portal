@@ -1,3 +1,4 @@
+import { ChatType } from "../enums/chat-enum";
 import { TUser } from "./user-type";
 
 export type TChat = {
@@ -5,6 +6,7 @@ export type TChat = {
   name: string;
   description: string;
   interlocutors: Omit<TUser, "config">[];
+  type: ChatType;
 };
 
 export type TChatCreate = {
@@ -19,7 +21,7 @@ export type TMessageType = {
   createdAt: string;
   id: string;
   chatId: string;
-  owner: TUser;
+  interlocutor: TUser;
 };
 export type TMessageResponseType = {
   messages: TMessageType[];

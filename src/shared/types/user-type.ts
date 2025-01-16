@@ -1,4 +1,5 @@
-type TRoleUserType = "user" | "admin";
+import { RoleEnum } from "../enums/role-enum";
+
 export type TUserConfig = {
   email: string;
   id: string;
@@ -11,7 +12,7 @@ export type TUser = {
   firstName: string;
   surname: string;
   patronymic: string;
-  role: TRoleUserType;
+  role: RoleEnum;
   groupId?: string;
   config: TUserConfig;
   avatar: string;

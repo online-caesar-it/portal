@@ -6,6 +6,7 @@ import ScrollToEnd from "~/shared/lib/components/scroll-to-end";
 import List from "~/shared/lib/components/list";
 import { TMessageType } from "~/shared/types/chat-type";
 import { TUser } from "~/shared/types/user-type";
+
 const MessageList = ({
   messages,
   handleOnEnd,
@@ -18,9 +19,9 @@ const MessageList = ({
   isLoading: boolean;
 }) => {
   const ref = useRef<HTMLDivElement | null>(null);
-
+  const isScrollingToEnd = useRef(true);
   useEffect(() => {
-    if (ref.current) {
+    if (isScrollingToEnd.current && ref.current) {
       const { scrollHeight, clientHeight } = ref.current;
       ref.current.scrollTop = scrollHeight - clientHeight;
     }
@@ -28,9 +29,20 @@ const MessageList = ({
 
   useEffect(() => {
     if (ref.current) {
-      ref.current.scrollTop = ref.current.scrollHeight;
+      const { scrollHeight, clientHeight } = ref.current;
+      ref.current.scrollTop = scrollHeight - clientHeight;
     }
   }, []);
+
+  const handleScrollToTop = () => {
+    isScrollingToEnd.current = false;
+    handleOnEnd();
+  };
+
+  const handleScrollToBottom = () => {
+    isScrollingToEnd.current = true;
+  };
+
   return (
     <ScrollArea
       viewportRef={ref}
@@ -40,7 +52,7 @@ const MessageList = ({
         maxHeight: "100%",
       }}
     >
-      <ScrollToEnd onTop={handleOnEnd}>
+      <ScrollToEnd onTop={handleScrollToTop} onEnd={handleScrollToBottom}>
         <If when={!isLoading} elseComponent={<Loader />}>
           <If when={messages.length > 0} elseComponent={"нет сообщений"}>
             <List list={messages}>
