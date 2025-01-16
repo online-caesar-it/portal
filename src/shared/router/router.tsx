@@ -5,7 +5,10 @@ import ProtectedLayout from "~/app/layouts/protected-layout";
 import AuthPage from "~/pages/auth.page";
 import ChatsPage from "~/pages/chats.page";
 import ConfirmPage from "~/pages/confirm.page";
+import DirectionPage from "~/pages/directrion.page";
 import MainPage from "~/pages/main.page";
+import { TUserRoleType } from "../types/user-type";
+import { RoleEnum } from "../enums/role-enum";
 
 export type TRoute = {
   Element: JSX.Element;
@@ -14,6 +17,7 @@ export type TRoute = {
   sidebar?: boolean;
   title?: string;
   icon?: ReactNode;
+  visibleForRole?: TUserRoleType[];
 };
 
 export const routes: TRoute[] = [
@@ -34,6 +38,13 @@ export const routes: TRoute[] = [
             path: "/chats",
             sidebar: true,
             title: "Общение",
+          },
+          {
+            Element: <DirectionPage />,
+            path: "/direction",
+            sidebar: true,
+            title: "Направления",
+            visibleForRole: [RoleEnum.ADMIN],
           },
         ],
       },

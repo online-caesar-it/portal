@@ -25,7 +25,7 @@ const ChatsList = () => {
   const debouncedHandler = useCallback(
     debounce((value: string) => {
       setSearchString(value);
-    }, 300),
+    }, 500),
     [setSearchString]
   );
 

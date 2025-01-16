@@ -6,57 +6,107 @@ import {
   Notification,
   Text,
   TextInput,
+  Loader,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { useState } from "react";
 import { authApi } from "~/shared/api/auth.api";
 import If from "~/shared/lib/components/if";
 
 const AuthForm = () => {
-  const [isVisibleNotification, setIsVisibleNotification] = useState(false);
+  const [notification, setNotification] = useState<{
+    visible: boolean;
+    message: string;
+    type: "success" | "error";
+  }>({
+    visible: false,
+    message: "",
+    type: "success",
+  });
+
   const form = useForm<{ email: string }>({
-    mode: "uncontrolled",
     initialValues: {
       email: "",
     },
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Не верный email"),
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Некорректный email"),
     },
   });
-  const onSubmit = async (values: { email: string }) => {
-    setIsVisibleNotification(true);
-    await authApi.loginByEmail(values);
+
+  const { mutate: login, isPending } = useMutation({
+    mutationKey: ["login"],
+    mutationFn: authApi.loginByEmail,
+    onSuccess: () => {
+      setNotification({
+        visible: true,
+        message: `Сообщение успешно отправлено на почту ${
+          form.getValues().email
+        }`,
+        type: "success",
+      });
+    },
+    onError: (error: Error) => {
+      if (axios.isAxiosError(error) && error.response) {
+        setNotification({
+          visible: true,
+          message: error.response.data?.message || "Ошибка сервера",
+          type: "error",
+        });
+      } else {
+        setNotification({
+          visible: true,
+          message: "Произошла неизвестная ошибка. Попробуйте позже.",
+          type: "error",
+        });
+      }
+    },
+  });
+
+  const onSubmit = (values: { email: string }) => {
+    login(values);
   };
+
   return (
-    <Flex direction={"column"} align={"center"} w={"100%"} gap={50}>
-      <If when={isVisibleNotification} elseComponent={<></>}>
+    <Flex direction="column" align="center" w="100%" gap={50}>
+      <If when={notification.visible}>
         <Notification
-          w={"60%"}
-          top={0}
-          onClose={() => setIsVisibleNotification(false)}
-          title={"Успешно"}
-          color={"teal"}
+          w="60%"
+          top={10}
+          onClose={() =>
+            setNotification({ visible: false, message: "", type: "success" })
+          }
+          title={notification.type === "success" ? "Успешно" : "Ошибка"}
+          color={notification.type === "success" ? "teal" : "red"}
         >
-          Сообщение было отправлено на почту {form.getValues().email}
+          {notification.message}
         </Notification>
       </If>
-      <Card w={"60%"}>
+      <Card w="60%">
         <Center>
           <Text fw={700} size="xl" c="blue">
             Вход
           </Text>
         </Center>
 
-        <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
+        <form onSubmit={form.onSubmit(onSubmit)}>
           <TextInput
             withAsterisk
             label="Email"
             placeholder="your@email.com"
-            key={form.key("email")}
             {...form.getInputProps("email")}
+            disabled={isPending}
           />
-          <Button type="submit" color="blue" fullWidth mt="md" radius="md">
-            Войти
+          <Button
+            type="submit"
+            color="blue"
+            fullWidth
+            mt="md"
+            radius="md"
+            disabled={isPending}
+          >
+            {isPending ? <Loader size="sm" color="white" /> : "Войти"}
           </Button>
         </form>
       </Card>

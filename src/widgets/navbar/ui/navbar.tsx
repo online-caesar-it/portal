@@ -1,7 +1,9 @@
 import { Accordion, Button, Flex } from "@mantine/core";
 import { useNavigate } from "react-router";
 import { Fragment } from "react/jsx-runtime";
+import { RoleEnum } from "~/shared/enums/role-enum";
 import If from "~/shared/lib/components/if";
+import VisibleForRoles from "~/shared/lib/components/visible-for-roles";
 import { routes, TRoute } from "~/shared/router/router";
 
 const RenderSidebarItem = ({ routes }: { routes: TRoute[] }) => {
@@ -31,13 +33,23 @@ const RenderSidebarItem = ({ routes }: { routes: TRoute[] }) => {
                     <RenderSidebarItem routes={item.childrens ?? []} />
                   }
                 >
-                  <Button
-                    onClick={() => navigate(item.path!)}
-                    w={"100%"}
-                    variant="light"
+                  <VisibleForRoles
+                    roles={
+                      item.visibleForRole || [
+                        RoleEnum.ADMIN,
+                        RoleEnum.EDUCATOR,
+                        RoleEnum.student,
+                      ]
+                    }
                   >
-                    {item.title}
-                  </Button>
+                    <Button
+                      onClick={() => navigate(item.path!)}
+                      w={"100%"}
+                      variant={"light"}
+                    >
+                      {item.title}
+                    </Button>
+                  </VisibleForRoles>
                 </If>
               </div>
             }

@@ -45,10 +45,11 @@ const verifySignUp = async (
   });
 };
 const loginByEmail = async ({ email }: { email?: string }) => {
-  return await api.post("/auth/sign-in/by-email", {
+  const { data } = await api.post("/auth/sign-in/by-email", {
     email,
     isPortal: true,
   });
+  return data;
 };
 const verifySignIn = async (
   token: string | null

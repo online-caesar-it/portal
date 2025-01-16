@@ -1,20 +1,18 @@
 import { useSession } from "~/shared/hooks/useSession";
 import If from "./if";
 import { ReactNode } from "react";
-import { RoleEnum } from "~/shared/enums/role-enum";
+import { TUserRoleType } from "~/shared/types/user-type";
 
 const VisibleForRoles = ({
   roles,
   children,
 }: {
-  roles: RoleEnum[];
+  roles: TUserRoleType[];
   children: ReactNode;
 }) => {
   const { session } = useSession();
   return (
-    <If when={roles.includes(session?.data.role || RoleEnum.EDUCATOR)}>
-      {children}
-    </If>
+    <If when={roles.includes(session?.data.role || "student")}>{children}</If>
   );
 };
 
