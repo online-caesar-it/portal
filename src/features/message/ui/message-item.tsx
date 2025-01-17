@@ -7,16 +7,18 @@ const MessageItem = ({ item, user }: { item: TMessageType; user?: TUser }) => {
 
   return (
     <Flex justify={isOwner ? "flex-end" : "flex-start"} mb="10px" w={"100%"}>
-      <Card radius={"lg"} w={"25%"} bg={"gray"} p="md">
-        <Flex direction={"column"} align={"start"} justify={"start"} p={"xs"}>
-          <Text size="sm" bd={"white"}>
-            {item?.text}
-          </Text>
-          <Text size="sm" bd={"white"}>
-            Отправитель: {item?.interlocutor?.firstName}
-          </Text>
-          <Text size="xs" color="dimmed">
-            {moment(item.createdAt).format("MMMM DD HH:MM")}
+      <Card radius={"lg"} w={"25%"} bg={isOwner ? "blue" : "gray"} px={"sm"}>
+        <Flex direction={"column"} align={"end"} justify={"end"} p={"xs"}>
+          <Flex direction={"column"} w={"100%"} align={"start"}>
+            <Text size="sm" bd={"white"}>
+              {item?.text}
+            </Text>
+            <Text size="sm" bd={"white"}>
+              Отправитель: {item?.interlocutor?.firstName}
+            </Text>
+          </Flex>
+          <Text size="xs">
+            {moment(item.createdAt).format("MMMM Do, YYYY [at] HH:mm")}
           </Text>
         </Flex>
       </Card>

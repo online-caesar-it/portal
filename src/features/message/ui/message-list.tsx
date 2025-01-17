@@ -1,47 +1,36 @@
-import { useEffect, useRef } from "react";
-import { Loader, ScrollArea } from "@mantine/core";
+import { Loader, ScrollArea, Dialog, Text } from "@mantine/core";
 import If from "~/shared/lib/components/if";
 import MessageItem from "~/features/message/ui/message-item";
 import ScrollToEnd from "~/shared/lib/components/scroll-to-end";
 import List from "~/shared/lib/components/list";
 import { TMessageType } from "~/shared/types/chat-type";
 import { TUser } from "~/shared/types/user-type";
+import { useMessageList } from "~/entities/chat/hooks/useMessageList";
 
 const MessageList = ({
   messages,
   handleOnEnd,
   user,
   isLoading,
+  newMessageReceived,
 }: {
   messages: TMessageType[];
-  handleOnEnd: () => void;
+  handleOnEnd: () => Promise<void>;
   user?: TUser;
   isLoading: boolean;
+  newMessageReceived: boolean;
 }) => {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const isScrollingToEnd = useRef(true);
-  useEffect(() => {
-    if (isScrollingToEnd.current && ref.current) {
-      const { scrollHeight, clientHeight } = ref.current;
-      ref.current.scrollTop = scrollHeight - clientHeight;
-    }
-  }, [messages]);
-
-  useEffect(() => {
-    if (ref.current) {
-      const { scrollHeight, clientHeight } = ref.current;
-      ref.current.scrollTop = scrollHeight - clientHeight;
-    }
-  }, []);
-
-  const handleScrollToTop = () => {
-    isScrollingToEnd.current = false;
-    handleOnEnd();
-  };
-
-  const handleScrollToBottom = () => {
-    isScrollingToEnd.current = true;
-  };
+  const {
+    ref,
+    handleCloseDialog,
+    handleScrollToBottom,
+    handleScrollToTop,
+    opened,
+  } = useMessageList({
+    handleOnEnd,
+    messages,
+    newMessageReceived,
+  });
 
   return (
     <ScrollArea
@@ -61,6 +50,9 @@ const MessageList = ({
           </If>
         </If>
       </ScrollToEnd>
+      <Dialog opened={opened} onClose={handleCloseDialog} withCloseButton>
+        <Text>Новое сообщение</Text>
+      </Dialog>
     </ScrollArea>
   );
 };

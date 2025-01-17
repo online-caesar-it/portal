@@ -6,12 +6,12 @@ import SendMessageForm from "~/features/message/ui/send-message-form";
 import MessageList from "~/features/message/ui/message-list";
 
 const Chat = ({ chatId }: { chatId: string }) => {
-  const { messages, sendMessage, isLoading, getNextPage } =
+  const { messages, sendMessage, isLoading, getNextPage, newMessageReceived } =
     useWebSocketChat(chatId);
   const { session } = useSession();
 
-  const handleOnEnd = () => {
-    void getNextPage();
+  const handleOnEnd = async () => {
+    await getNextPage();
   };
 
   return (
@@ -21,6 +21,7 @@ const Chat = ({ chatId }: { chatId: string }) => {
         user={session?.data}
         messages={messages.reverse()}
         isLoading={isLoading}
+        newMessageReceived={newMessageReceived}
       />
 
       <SendMessageForm chatId={chatId} sendMessage={sendMessage} />

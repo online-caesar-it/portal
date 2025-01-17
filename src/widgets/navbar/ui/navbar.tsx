@@ -13,33 +13,33 @@ const RenderSidebarItem = ({ routes }: { routes: TRoute[] }) => {
     <Flex direction={"column"} gap={10}>
       {routes.map((item, index) => (
         <Fragment key={item.path + "=" + item.title}>
-          <If
-            when={
-              item.sidebar &&
-              item.childrens &&
-              item.childrens.length > 0 &&
-              item.title &&
-              item.path
+          <VisibleForRoles
+            roles={
+              item.visibleForRole || [
+                RoleEnum.ADMIN,
+                RoleEnum.EDUCATOR,
+                RoleEnum.student,
+              ]
             }
-            elseComponent={
-              <div>
-                {(() => {
-                  console.log(item);
-                  return <></>;
-                })()}
-                <If
-                  when={item.sidebar && item.title && item.path}
-                  elseComponent={
-                    <RenderSidebarItem routes={item.childrens ?? []} />
-                  }
-                >
-                  <VisibleForRoles
-                    roles={
-                      item.visibleForRole || [
-                        RoleEnum.ADMIN,
-                        RoleEnum.EDUCATOR,
-                        RoleEnum.student,
-                      ]
+          >
+            <If
+              when={
+                item.sidebar &&
+                item.childrens &&
+                item.childrens.length > 0 &&
+                item.title
+              }
+              elseComponent={
+                <div>
+                  {(() => {
+                    console.log(item);
+                    return <></>;
+                  })()}
+
+                  <If
+                    when={item.sidebar && item.title && item.path}
+                    elseComponent={
+                      <RenderSidebarItem routes={item.childrens ?? []} />
                     }
                   >
                     <Button
@@ -49,25 +49,25 @@ const RenderSidebarItem = ({ routes }: { routes: TRoute[] }) => {
                     >
                       {item.title}
                     </Button>
-                  </VisibleForRoles>
-                </If>
-              </div>
-            }
-          >
-            <Accordion>
-              <Accordion.Item
-                key={item.path + "_" + index}
-                value={item.title ?? ""}
-              >
-                <Accordion.Control icon={item.icon}>
-                  {item.title}
-                </Accordion.Control>
-                <Accordion.Panel>
-                  <RenderSidebarItem routes={item.childrens ?? []} />
-                </Accordion.Panel>
-              </Accordion.Item>
-            </Accordion>
-          </If>
+                  </If>
+                </div>
+              }
+            >
+              <Accordion>
+                <Accordion.Item
+                  key={item.path + "_" + index}
+                  value={item.title ?? ""}
+                >
+                  <Accordion.Control icon={item.icon}>
+                    {item.title}
+                  </Accordion.Control>
+                  <Accordion.Panel>
+                    <RenderSidebarItem routes={item.childrens ?? []} />
+                  </Accordion.Panel>
+                </Accordion.Item>
+              </Accordion>
+            </If>
+          </VisibleForRoles>
         </Fragment>
       ))}
     </Flex>

@@ -9,14 +9,13 @@ const createChat = async (body: TChatCreate) => {
 };
 const getMessages = async (
   chatId: string,
-  cursor: number,
-  offset: number
+  cursor: number
 ): Promise<{
   items: TMessageType[];
   nextCursor: number;
 }> => {
   const { data } = await api.get(
-    `/chat/messages/get?chatId=${chatId}&cursor=${cursor}&limit=${10}&offset=${offset}`
+    `/chat/messages/get?chatId=${chatId}&cursor=${cursor}`
   );
   return data;
 };

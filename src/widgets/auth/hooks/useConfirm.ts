@@ -25,7 +25,6 @@ export const useConfirm = () => {
         );
       }
       router("/");
-      console.log(response.data);
     } catch (err) {
       console.error(err);
       setMessage("Ошибка подтверждения. Попробуйте снова.");

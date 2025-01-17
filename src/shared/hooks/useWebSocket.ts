@@ -10,7 +10,7 @@ export const useWebSocketChat = (chatId: string) => {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [messages, setMessages] = useState<TMessageType[]>([]);
   const token = localStorageToken.getAccessToken();
-
+  const [newMessageReceived, setNewMessageReceived] = useState(false);
   useEffect(() => {
     const wsUrl = new URL(env.VITE_WS_URL);
     wsUrl.searchParams.append("access_token", token || "");
@@ -24,9 +24,10 @@ export const useWebSocketChat = (chatId: string) => {
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log(data, "DATA ON MESSAGE");
-      if (data.event === "newMessage") {
+      if (data.event === ChatEvents.NEW_MESSAGES) {
         setMessages((prevMessages) => [...prevMessages, data.payload]);
+        console.log(event);
+        setNewMessageReceived((prevState) => !prevState);
       } else {
         console.warn("Unknown event:", data.event);
       }
@@ -52,7 +53,11 @@ export const useWebSocketChat = (chatId: string) => {
           event: ChatEvents.SEND_MESSAGE,
           payload: { chatId, text },
         };
+        console.log(payload);
+
         ws.send(JSON.stringify(payload));
+        setNewMessageReceived((prevState) => !prevState);
+
         console.log("Message sent:", text);
       } else {
         console.error("WebSocket is not open. Cannot send message.");
@@ -63,13 +68,13 @@ export const useWebSocketChat = (chatId: string) => {
   const { data, isLoading, hasNextPage, fetchNextPage, isFetching } =
     useInfiniteQuery({
       queryKey: ["get-messages", chatId],
-      queryFn: ({ pageParam }) =>
-        chatApi.getMessages(chatId, pageParam, messages.length),
+      queryFn: ({ pageParam }) => chatApi.getMessages(chatId, pageParam),
       getNextPageParam: (lastPage) => lastPage.nextCursor,
       initialPageParam: 0,
     });
   const getMessages = () => {
     const _messages = data?.pages?.flatMap((it) => it.items) ?? [];
+    console.log(_messages);
     messages.forEach((item) => {
       const exist = _messages.find((it) => it.id === item.id);
 
@@ -79,9 +84,7 @@ export const useWebSocketChat = (chatId: string) => {
     });
     return _messages;
   };
-  console.log(messages, "MESSAGES");
   const _messages = useMemo(() => getMessages(), [data, messages]);
-  console.log(data, "DATA");
   const getNextPage = async () => {
     if (isFetching || !hasNextPage) {
       return;
@@ -94,5 +97,6 @@ export const useWebSocketChat = (chatId: string) => {
     sendMessage,
     isLoading,
     getNextPage,
+    newMessageReceived,
   };
 };
