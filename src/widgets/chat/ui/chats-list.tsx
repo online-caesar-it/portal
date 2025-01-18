@@ -7,8 +7,8 @@ import ChatItem from "~/features/chat/chat-item";
 import Chat from "./chat";
 import VisibleForRoles from "~/shared/lib/components/visible-for-roles";
 import { RoleEnum } from "~/shared/enums/role-enum";
-import ChatCreateByEducatorModal from "./chat-create-by-educator-modal";
 import { debounce } from "lodash";
+import ChatCreateModal from "./chat-create-modal";
 
 const ChatsList = () => {
   const { chats, isLoading, searchString, setSearchString } = useQueryMyChats();
@@ -59,7 +59,7 @@ const ChatsList = () => {
           </If>
         </If>
         <VisibleForRoles roles={[RoleEnum.EDUCATOR]}>
-          <ChatCreateByEducatorModal setShow={setShow} show={show} />
+          <ChatCreateModal setShow={setShow} show={show} />
         </VisibleForRoles>
       </Flex>
       <If when={isVisibleChat}>

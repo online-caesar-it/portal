@@ -2,7 +2,7 @@ import { Group, Button, Radio } from "@mantine/core";
 import StudentList from "~/features/student/ui/student-list";
 import { useChatByEducator } from "../hooks/useChatByEducator";
 import { TUser } from "~/shared/types/user-type";
-const ChatCreateFormByEducator = ({ students }: { students?: TUser[] }) => {
+const ChatCreateForm = ({ students }: { students?: TUser[] }) => {
   const {
     selectedStudentId,
     submit,
@@ -53,4 +53,4 @@ const ChatCreateFormByEducator = ({ students }: { students?: TUser[] }) => {
   );
 };
 
-export default ChatCreateFormByEducator;
+export default ChatCreateForm;

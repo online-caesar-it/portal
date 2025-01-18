@@ -1,12 +1,12 @@
 import { Modal, TextInput, Flex, Loader } from "@mantine/core";
 
-import ChatCreateFormByEducator from "./chat-create-form-by-educator";
 import { useQueryMyStudents } from "~/entities/student/hooks/useQueryMyStudents";
 import { debounce } from "lodash";
 import { useCallback, useState } from "react";
 import If from "~/shared/lib/components/if";
+import ChatCreateForm from "./chat-create-form";
 
-const ChatCreateByEducatorModal = ({
+const ChatCreateModal = ({
   show,
   setShow,
 }: {
@@ -42,11 +42,11 @@ const ChatCreateByEducatorModal = ({
           placeholder="Поиск"
         />
         <If when={!isLoading} elseComponent={<Loader />}>
-          <ChatCreateFormByEducator students={students?.data} />
+          <ChatCreateForm students={students?.data} />
         </If>
       </Flex>
     </Modal>
   );
 };
 
-export default ChatCreateByEducatorModal;
+export default ChatCreateModal;
