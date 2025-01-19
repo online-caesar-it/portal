@@ -32,7 +32,7 @@ const Direction = () => {
         visibleDialogDirection={() =>
           setDialogVisible({
             isShow: true,
-            text: "Новое направление создан успешно",
+            text: "Новое направление создано успешно",
           })
         }
         visibleDialogModule={() => {

@@ -1,8 +1,9 @@
-import { Button, Card, Flex, Text } from "@mantine/core";
-import { TDirection } from "~/shared/types/direction-type";
+import { Card, Flex, Button, Text } from "@mantine/core";
 import { FaArrowRight } from "react-icons/fa6";
 import { useNavigate } from "react-router";
-const DirectionItem = ({ item }: { item: TDirection }) => {
+import { TModule } from "~/shared/types/module-type";
+
+const ModuleItem = ({ item }: { item: TModule }) => {
   const router = useNavigate();
   return (
     <Card radius={"lg"} w={"100%"} bg={"gray"}>
@@ -12,15 +13,15 @@ const DirectionItem = ({ item }: { item: TDirection }) => {
           <Text color={"blue"}>{item.description}</Text>
         </Flex>
         <Button
-          onClick={() => router(`/admin/module/${item.id}`)}
+          onClick={() => router(`/admin/lesson/${item.id}`)}
           rightSection={<FaArrowRight />}
           variant="light"
         >
-          К модулям
+          К урокам
         </Button>
       </Flex>
     </Card>
   );
 };
 
-export default DirectionItem;
+export default ModuleItem;

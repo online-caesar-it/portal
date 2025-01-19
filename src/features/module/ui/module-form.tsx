@@ -1,6 +1,6 @@
 import { Flex, TextInput, Button, Loader, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useMutationCreateModule } from "~/entities/module/hooks/useMutationCreateModule";
+import { useMutateCreateModule } from "~/entities/module/hooks/useMutateCreateModule";
 import If from "~/shared/lib/components/if";
 
 const ModuleForm = ({
@@ -23,13 +23,12 @@ const ModuleForm = ({
         value.trim().length === 0 ? "Поле Описание обязательно" : null,
     },
   });
-  const { submit, isPending } = useMutationCreateModule({
+  const { submit, isPending } = useMutateCreateModule({
     toggle,
   });
   return (
     <form onSubmit={form.onSubmit((values) => submit(values))}>
-      <Flex mt={"lg"} direction={"column"} w={"100%"}>
-        <Text>Создание модуля</Text>
+      <Flex direction={"column"} w={"100%"}>
         <Flex direction={"column"} w={"100%"} gap={"lg"}>
           <TextInput
             withAsterisk
