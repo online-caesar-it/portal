@@ -15,7 +15,7 @@ const Chat = ({ chatId }: { chatId: string }) => {
   };
 
   return (
-    <Flex flex={1} h={"90%"} direction={"column"} justify={"space-between"}>
+    <Flex flex={1} h={"90vh"} direction={"column"} justify={"space-between"}>
       <MessageList
         handleOnEnd={handleOnEnd}
         user={session?.data}
@@ -23,7 +23,6 @@ const Chat = ({ chatId }: { chatId: string }) => {
         isLoading={isLoading}
         newMessageReceived={newMessageReceived}
       />
-
       <SendMessageForm chatId={chatId} sendMessage={sendMessage} />
     </Flex>
   );

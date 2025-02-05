@@ -6,21 +6,23 @@ const MessageItem = ({ item, user }: { item: TMessageType; user?: TUser }) => {
   const isOwner = item.ownerId === user?.id;
 
   return (
-    <Flex justify={isOwner ? "flex-end" : "flex-start"} mb="10px" w={"100%"}>
-      <Card radius={"lg"} w={"25%"} bg={isOwner ? "blue" : "gray"} px={"sm"}>
-        <Flex direction={"column"} align={"end"} justify={"end"} p={"xs"}>
-          <Flex direction={"column"} w={"100%"} align={"start"}>
-            <Text size="sm" bd={"white"}>
-              {item?.text}
-            </Text>
-            <Text size="sm" bd={"white"}>
-              Отправитель: {item?.interlocutor?.firstName}
-            </Text>
-          </Flex>
-          <Text size="xs">
-            {moment(item.createdAt).format("MMMM Do, YYYY [at] HH:mm")}
-          </Text>
-        </Flex>
+    <Flex justify={isOwner ? "flex-end" : "flex-start"} mb="4px" w="100%">
+      <Card
+        radius={16}
+        px="md"
+        py="xs"
+        className={isOwner ? "bg-blue-20" : "bg-blue-80"}
+        style={{
+          maxWidth: "80%",
+          backgroundColor: isOwner ? "#0088cc" : "#8774e0",
+          borderBottomRightRadius: isOwner ? 4 : 16,
+          borderBottomLeftRadius: isOwner ? 16 : 4,
+        }}
+      >
+        <Text size="sm">{item?.text}</Text>
+        <Text size="xs" style={{ opacity: 0.6, alignSelf: "flex-end" }}>
+          {moment(item.createdAt).format("HH:mm")}
+        </Text>
       </Card>
     </Flex>
   );

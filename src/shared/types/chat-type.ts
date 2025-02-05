@@ -7,6 +7,7 @@ export type TChat = {
   description: string;
   interlocutors: Omit<TUser, "config">[];
   type: ChatType;
+  message: TMessageType;
 };
 
 export type TChatCreate = {
