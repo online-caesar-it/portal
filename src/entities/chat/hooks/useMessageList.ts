@@ -24,63 +24,68 @@ export const useMessageList = ({
       setIsFetching(true);
 
       const { scrollHeight, scrollTop, clientHeight } = ref.current;
-      const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
-      prevScrollHeight.current = scrollHeight; // Запоминаем высоту до загрузки
+      const userAtBottom = scrollTop + clientHeight >= scrollHeight - 10;
+      prevScrollHeight.current = scrollHeight;
 
       await handleOnEnd();
       setIsFetching(false);
 
-      if (ref.current) {
+      setTimeout(() => {
+        if (!ref.current) return;
         const newScrollHeight = ref.current.scrollHeight;
         const heightDiff = newScrollHeight - prevScrollHeight.current;
 
-        // Если пользователь был вверху перед загрузкой
-        if (scrollTop === 0) {
-          ref.current.scrollTo({
-            top: heightDiff, // Смещаем вниз ровно на количество загруженных пикселей
-            behavior: "auto",
-          });
+        ref.current.scrollTop += heightDiff;
+
+        if (userAtBottom) {
+          ref.current.scrollTop = ref.current.scrollHeight;
         }
-        // Если пользователь был внизу перед загрузкой
-        else if (distanceFromBottom < 50) {
-          ref.current.scrollTo({
-            top: newScrollHeight - clientHeight,
-            behavior: "auto",
-          });
-        }
-      }
+      }, 50);
     }, 300),
     [handleOnEnd, isFetching]
   );
 
   useEffect(() => {
-    if (isScrollingToEnd.current && ref.current) {
-      const { scrollHeight, clientHeight } = ref.current;
-      ref.current.scrollTop = scrollHeight - clientHeight;
+    if (!ref.current) return;
+    const { scrollHeight, clientHeight, scrollTop } = ref.current;
+    const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
+
+    if (distanceFromBottom < 100) {
+      ref.current.scrollTo({
+        top: scrollHeight,
+        behavior: "smooth",
+      });
     }
   }, [messages]);
+
+  /** Следим за пользовательским скроллом */
+  const handleUserScroll = () => {
+    if (!ref.current) return;
+    const { scrollHeight, clientHeight, scrollTop } = ref.current;
+    isScrollingToEnd.current = scrollTop + clientHeight >= scrollHeight - 10;
+  };
 
   useEffect(() => {
-    if (ref.current) {
-      const { scrollHeight, clientHeight, scrollTop } = ref.current;
-      isScrollingToEnd.current = scrollTop + clientHeight >= scrollHeight;
-    }
-  }, [messages]);
+    const el = ref.current;
+    if (!el) return;
+    el.addEventListener("scroll", handleUserScroll);
+    return () => el.removeEventListener("scroll", handleUserScroll);
+  }, []);
 
+  /** Принудительно скроллим вверх (подгружаем историю) */
   const handleScrollToTop = () => {
     if (!isFetching) debouncedHandleOnEnd();
   };
 
+  /** Принудительно скроллим вниз */
   const handleScrollToBottom = () => {
     isScrollingToEnd.current = true;
     if (ref.current) {
-      ref.current.scrollTo({
-        top: ref.current.scrollHeight,
-        behavior: "smooth",
-      });
+      ref.current.scrollTop = ref.current.scrollHeight;
     }
   };
 
+  /** Открываем диалог при новом сообщении */
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
@@ -91,16 +96,18 @@ export const useMessageList = ({
     }
   }, [newMessageReceived]);
 
-  const handleCloseDialog = () => {
-    setOpened(false);
-  };
+  const handleCloseDialog = () => setOpened(false);
 
   useEffect(() => {
     return () => {
       debouncedHandleOnEnd.cancel();
     };
   }, [debouncedHandleOnEnd]);
-
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollTop = ref.current.scrollHeight;
+    }
+  }, []);
   return {
     handleCloseDialog,
     handleScrollToTop,

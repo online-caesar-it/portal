@@ -31,7 +31,6 @@ const MessageList = ({
     messages,
     newMessageReceived,
   });
-
   const renderMessages = () => {
     let lastDate = "";
 

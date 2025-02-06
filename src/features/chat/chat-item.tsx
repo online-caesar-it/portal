@@ -10,7 +10,7 @@ const ChatItem = ({
   onClick: (id: string) => void;
   chatId: string;
 }) => {
-  const lastMessage = item.message.text || "Нет сообщений";
+  const lastMessage = item?.message?.text || "Нет сообщений";
   const isActive = chatId === item.id;
 
   return (
