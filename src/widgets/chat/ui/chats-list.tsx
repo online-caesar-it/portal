@@ -62,7 +62,10 @@ const ChatsList = () => {
         </If>
       </Flex>
       <If when={isVisibleChat}>
-        <Chat chatId={chatId} />
+        <Chat
+          chatId={chatId}
+          chat={chats?.data.find((it) => it.id === chatId)}
+        />
       </If>
     </Flex>
   );

@@ -1,5 +1,10 @@
 import { api } from "~/shared/api/api";
-import { TChat, TChatCreate, TMessageType } from "~/shared/types/chat-type";
+import {
+  TChat,
+  TChatCreate,
+  TMessageType,
+  TSearchMessageType,
+} from "~/shared/types/chat-type";
 
 const getMyChats = async (search: string): Promise<{ data: TChat[] }> => {
   return await api.get(`/chat/getMyChats?search=${search}`);
@@ -19,8 +24,18 @@ const getMessages = async (
   );
   return data;
 };
+const searchMessage = async (
+  search: string,
+  chatId: string
+): Promise<TSearchMessageType[]> => {
+  const { data } = await api.get(
+    `/chat/messages/search?chatId=${chatId}&search=${search}`
+  );
+  return data;
+};
 export const chatApi = {
   getMyChats,
   createChat,
   getMessages,
+  searchMessage,
 };

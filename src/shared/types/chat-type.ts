@@ -24,6 +24,10 @@ export type TMessageType = {
   chatId: string;
   interlocutor: TUser;
 };
+export type TSearchMessageType = Pick<
+  TMessageType,
+  "chatId" | "id" | "text" | "createdAt"
+>;
 export type TMessageResponseType = {
   messages: TMessageType[];
   maxPages: number;

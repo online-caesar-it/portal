@@ -58,7 +58,6 @@ export const useMessageList = ({
     }
   }, [messages]);
 
-  /** Следим за пользовательским скроллом */
   const handleUserScroll = () => {
     if (!ref.current) return;
     const { scrollHeight, clientHeight, scrollTop } = ref.current;
@@ -72,12 +71,10 @@ export const useMessageList = ({
     return () => el.removeEventListener("scroll", handleUserScroll);
   }, []);
 
-  /** Принудительно скроллим вверх (подгружаем историю) */
   const handleScrollToTop = () => {
     if (!isFetching) debouncedHandleOnEnd();
   };
 
-  /** Принудительно скроллим вниз */
   const handleScrollToBottom = () => {
     isScrollingToEnd.current = true;
     if (ref.current) {
@@ -85,7 +82,6 @@ export const useMessageList = ({
     }
   };
 
-  /** Открываем диалог при новом сообщении */
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;

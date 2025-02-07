@@ -1,14 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { localStorageToken } from "../local-storage/token";
 import { ChatEvents } from "../enums/ws-enum";
-// import { TMessageType } from "../types/chat-type";
-// import { useInfiniteQuery } from "@tanstack/react-query";
-// import { chatApi } from "~/entities/chat/api/chat.api";
 import { env } from "~/env";
 
 export const useWebSocket = () => {
   const [ws, setWs] = useState<WebSocket>();
-  // const [messages, setMessages] = useState<TMessageType[]>([]);
   const token = localStorageToken.getAccessToken();
   const [newMessageReceived, setNewMessageReceived] = useState(false);
   useEffect(() => {
@@ -21,17 +17,6 @@ export const useWebSocket = () => {
     socket.onopen = () => {
       console.log("WebSocket connected");
     };
-
-    // socket.onmessage = (event) => {
-    //   const data = JSON.parse(event.data);
-    //   if (data.event === ChatEvents.NEW_MESSAGES) {
-    //     setMessages((prevMessages) => [...prevMessages, data.payload]);
-    //     console.log(event);
-    //     setNewMessageReceived((prevState) => !prevState);
-    //   } else {
-    //     console.warn("Unknown event:", data.event);
-    //   }
-    // };
 
     socket.onclose = () => {
       console.log("WebSocket closed");
@@ -64,32 +49,7 @@ export const useWebSocket = () => {
     },
     [ws]
   );
-  // const { data, isLoading, hasNextPage, fetchNextPage, isFetching } =
-  //   useInfiniteQuery({
-  //     queryKey: ["get-messages", chatId],
-  //     queryFn: ({ pageParam }) => chatApi.getMessages(chatId, pageParam),
-  //     getNextPageParam: (lastPage) => lastPage.nextCursor,
-  //     initialPageParam: 0,
-  //   });
-  // const getMessages = () => {
-  //   const _messages = data?.pages?.flatMap((it) => it.items) ?? [];
-  //   console.log(_messages);
-  //   messages.forEach((item) => {
-  //     const exist = _messages.find((it) => it.id === item.id);
 
-  //     if (!exist) {
-  //       _messages.unshift(item);
-  //     }
-  //   });
-  //   return _messages;
-  // };
-  // const _messages = useMemo(() => getMessages(), [data, messages]);
-  // const getNextPage = async () => {
-  //   if (isFetching || !hasNextPage) {
-  //     return;
-  //   }
-  //   await fetchNextPage();
-  // };
   return {
     ws,
     sendMessage,
