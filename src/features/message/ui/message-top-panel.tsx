@@ -1,46 +1,48 @@
-import { Flex, Text, TextInput } from "@mantine/core";
+import { Button, Flex, Text } from "@mantine/core";
 import List from "~/shared/lib/components/list";
 import { TChat } from "~/shared/types/chat-type";
 import { CiSearch } from "react-icons/ci";
+import If from "~/shared/lib/components/if";
+
 const MessageTopPanel = ({
   chat,
-  search,
-  setSearch,
+  toggle,
 }: {
   chat?: TChat;
-  search: string;
-  setSearch: (value: string) => void;
+  toggle: () => void;
 }) => {
   return (
     <Flex
-      style={{
-        borderRadius: 12,
-      }}
-      align={"center"}
-      justify={"space-between"}
-      bg={"blue"}
+      className={"rounded-lg"}
+      direction="row"
       py={"sm"}
       px={"lg"}
+      bg={"gray"}
+      align={"center"}
+      justify={"space-between"}
     >
-      <Flex direction={"column"}>
-        <Text size={"lg"}>
-          Количество участников: {chat?.interlocutors.length}
-        </Text>
+      <Flex direction="column" className="space-y-2">
+        <If when={chat?.interlocutors && chat?.interlocutors.length > 0}>
+          <Text size="lg" className="text-white font-semibold">
+            Количество участников: {chat?.interlocutors.length || 0 + 1}
+          </Text>
+        </If>
         <List list={chat?.interlocutors ?? []}>
           {({ firstName, surname }) => (
-            <Text truncate>
+            <Text className="text-white truncate">
               {firstName} {surname}
             </Text>
           )}
         </List>
       </Flex>
-      <TextInput
-        value={search}
-        variant={"outline"}
-        onChange={(e) => setSearch(e.target.value)}
+      <Button
+        onClick={toggle}
+        variant={"filled"}
+        bg={"blue"}
         leftSection={<CiSearch />}
-        placeholder={"Поиск по сообщениям"}
-      />
+      >
+        <Text>Поиск по сообщениям</Text>
+      </Button>
     </Flex>
   );
 };

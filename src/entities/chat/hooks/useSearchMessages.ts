@@ -9,7 +9,7 @@ export const useSearchMessages = (chatId: string) => {
     queryFn: () => chatApi.searchMessage(search, chatId),
   });
   return {
-    data,
+    messagesSearch: data,
     isLoading,
     setSearch,
     search,
