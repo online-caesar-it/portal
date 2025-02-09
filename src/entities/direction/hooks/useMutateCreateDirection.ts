@@ -20,7 +20,10 @@ export const useMutateCreateDirection = ({
     },
   });
   const submit = (values: Omit<TDirection, "id">) => {
-    mutate(values);
+    mutate({
+      ...values,
+      duration: values.duration.split(" ")[0],
+    });
   };
   return {
     submit,
