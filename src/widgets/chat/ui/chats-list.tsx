@@ -6,14 +6,17 @@ import List from "~/shared/lib/components/list";
 import ChatItem from "~/features/chat/chat-item";
 import Chat from "./chat";
 import { debounce } from "lodash";
+import { TChat } from "~/shared/types/chat-type";
 
 const ChatsList = () => {
   const { chats, isLoading, searchString, setSearchString } = useQueryMyChats();
   const [localSearch, setLocalSearch] = useState(searchString);
   const [isVisibleChat, setIsVisibleChat] = useState(false);
   const [chatId, setChatId] = useState("");
-
+  const [chat, setChat] = useState<TChat>();
   const handleOpenChat = (id: string) => {
+    const findChat = chats?.data.find((it) => it.id === id);
+    setChat(findChat);
     setIsVisibleChat(true);
     setChatId(id);
   };
@@ -62,10 +65,7 @@ const ChatsList = () => {
         </If>
       </Flex>
       <If when={isVisibleChat}>
-        <Chat
-          chatId={chatId}
-          chat={chats?.data.find((it) => it.id === chatId)}
-        />
+        <Chat chatId={chatId} chat={chat} />
       </If>
     </Flex>
   );

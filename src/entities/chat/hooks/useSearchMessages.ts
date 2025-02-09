@@ -7,10 +7,11 @@ export const useSearchMessages = (chatId: string) => {
   const { data, isLoading } = useQuery({
     queryKey: ["search-messages", search],
     queryFn: () => chatApi.searchMessage(search, chatId),
+    enabled: !!search,
   });
   return {
     messagesSearch: data,
-    isLoading,
+    isMessagesSearchLoading: isLoading,
     setSearch,
     search,
   };

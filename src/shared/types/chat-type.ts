@@ -26,7 +26,7 @@ export type TMessageType = {
 };
 export type TSearchMessageType = Pick<
   TMessageType,
-  "chatId" | "id" | "text" | "createdAt"
+  "chatId" | "id" | "text" | "createdAt" | "interlocutor"
 >;
 export type TMessageResponseType = {
   messages: TMessageType[];

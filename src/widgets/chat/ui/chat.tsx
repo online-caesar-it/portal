@@ -16,7 +16,8 @@ import MessageSearch from "~/features/message/ui/message-search";
 const Chat = ({ chatId, chat }: { chatId: string; chat?: TChat }) => {
   const { messages, sendMessage, isLoading, getNextPage, newMessageReceived } =
     useHandlerMessageWs(chatId);
-  const { setSearch, search, messagesSearch } = useSearchMessages(chatId);
+  const { setSearch, search, messagesSearch, isMessagesSearchLoading } =
+    useSearchMessages(chatId);
   const { session } = useSession();
   const [opened, { toggle, close }] = useDisclosure();
   const handleOnEnd = async () => {
@@ -50,6 +51,7 @@ const Chat = ({ chatId, chat }: { chatId: string; chat?: TChat }) => {
           value={localSearch}
           onChange={handleInputChange}
           messages={messagesSearch}
+          isLoading={isMessagesSearchLoading}
         />
       </Modal>
     </Flex>
