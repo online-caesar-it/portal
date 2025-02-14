@@ -7,6 +7,7 @@ export type TChat = {
   description: string;
   interlocutors: Omit<TUser, "config">[];
   type: ChatType;
+  message: TMessageType;
 };
 
 export type TChatCreate = {
@@ -23,6 +24,10 @@ export type TMessageType = {
   chatId: string;
   interlocutor: TUser;
 };
+export type TSearchMessageType = Pick<
+  TMessageType,
+  "chatId" | "id" | "text" | "createdAt" | "interlocutor"
+>;
 export type TMessageResponseType = {
   messages: TMessageType[];
   maxPages: number;

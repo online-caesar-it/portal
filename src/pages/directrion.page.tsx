@@ -1,7 +1,6 @@
-import DirectionCreate from "~/widgets/direction/ui/direction-create";
-
+import Direction from "~/widgets/direction/ui/direction";
 const DirectionPage = () => {
-  return <DirectionCreate />;
+  return <Direction />;
 };
 
 export default DirectionPage;

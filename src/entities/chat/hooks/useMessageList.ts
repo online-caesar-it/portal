@@ -1,4 +1,4 @@
-import { TMessageType } from "./../../../shared/types/chat-type";
+import { TMessageType } from "~/shared/types/chat-type";
 import { debounce } from "lodash";
 import { useRef, useState, useCallback, useEffect } from "react";
 
@@ -15,60 +15,95 @@ export const useMessageList = ({
   const isScrollingToEnd = useRef(true);
   const [isFetching, setIsFetching] = useState(false);
   const [opened, setOpened] = useState(false);
+  const firstRender = useRef(true);
+  const prevScrollHeight = useRef(0);
 
   const debouncedHandleOnEnd = useCallback(
     debounce(async () => {
-      if (isFetching) return;
+      if (isFetching || !ref.current) return;
       setIsFetching(true);
+
+      const { scrollHeight, scrollTop, clientHeight } = ref.current;
+      const userAtBottom = scrollTop + clientHeight >= scrollHeight - 10;
+      prevScrollHeight.current = scrollHeight;
+
       await handleOnEnd();
       setIsFetching(false);
 
-      if (ref.current) {
-        ref.current.scrollTop += 50;
-      }
+      setTimeout(() => {
+        if (!ref.current) return;
+        const newScrollHeight = ref.current.scrollHeight;
+        const heightDiff = newScrollHeight - prevScrollHeight.current;
+
+        ref.current.scrollTop += heightDiff;
+
+        if (userAtBottom) {
+          ref.current.scrollTop = ref.current.scrollHeight;
+        }
+      }, 50);
     }, 300),
     [handleOnEnd, isFetching]
   );
 
   useEffect(() => {
-    if (isScrollingToEnd.current && ref.current) {
-      const { scrollHeight, clientHeight } = ref.current;
-      ref.current.scrollTop = scrollHeight - clientHeight;
+    if (!ref.current) return;
+    const { scrollHeight, clientHeight, scrollTop } = ref.current;
+    const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
+
+    if (distanceFromBottom < 100) {
+      ref.current.scrollTo({
+        top: scrollHeight,
+        behavior: "smooth",
+      });
     }
   }, [messages]);
+
+  const handleUserScroll = () => {
+    if (!ref.current) return;
+    const { scrollHeight, clientHeight, scrollTop } = ref.current;
+    isScrollingToEnd.current = scrollTop + clientHeight >= scrollHeight - 10;
+  };
 
   useEffect(() => {
-    if (ref.current) {
-      const { scrollHeight, clientHeight, scrollTop } = ref.current;
-      if (scrollTop + clientHeight >= scrollHeight) {
-        isScrollingToEnd.current = true;
-      } else {
-        isScrollingToEnd.current = false;
-      }
-    }
-  }, [messages]);
+    const el = ref.current;
+    if (!el) return;
+    el.addEventListener("scroll", handleUserScroll);
+    return () => el.removeEventListener("scroll", handleUserScroll);
+  }, []);
 
   const handleScrollToTop = () => {
-    debouncedHandleOnEnd();
+    if (!isFetching) debouncedHandleOnEnd();
   };
 
   const handleScrollToBottom = () => {
     isScrollingToEnd.current = true;
+    if (ref.current) {
+      ref.current.scrollTop = ref.current.scrollHeight;
+    }
   };
 
   useEffect(() => {
-    setOpened(true);
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    if (newMessageReceived) {
+      setOpened(true);
+    }
   }, [newMessageReceived]);
 
-  const handleCloseDialog = () => {
-    setOpened(false);
-  };
+  const handleCloseDialog = () => setOpened(false);
 
   useEffect(() => {
     return () => {
       debouncedHandleOnEnd.cancel();
     };
   }, [debouncedHandleOnEnd]);
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollTop = ref.current.scrollHeight;
+    }
+  }, []);
   return {
     handleCloseDialog,
     handleScrollToTop,
