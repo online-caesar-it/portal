@@ -56,6 +56,7 @@ const MessageList = ({
   return (
     <ScrollArea viewportRef={ref}>
       <ScrollToEnd onTop={handleScrollToTop} onEnd={handleScrollToBottom}>
+        <div className={"h-[20px]"}></div>
         <If when={!isLoading} elseComponent={<Loader />}>
           <If when={messages.length > 0} elseComponent={"Нет сообщений"}>
             {renderMessages()}

@@ -28,6 +28,7 @@ export const useMessageList = ({
       prevScrollHeight.current = scrollHeight;
 
       await handleOnEnd();
+      console.log("LOG IN HANDLE ON END");
       setIsFetching(false);
 
       setTimeout(() => {
@@ -117,7 +118,7 @@ export const useMessageList = ({
         debouncedHandleOnEnd.cancel();
       }
     };
-  }, [isFetching]);
+  }, [isFetching, debouncedHandleOnEnd]);
   // useEffect(() => {
   //   if (ref.current) {
   //     ref.current.scrollTop = ref.current.scrollHeight;
