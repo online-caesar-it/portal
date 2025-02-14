@@ -17,7 +17,7 @@ export const useMessageList = ({
   const [opened, setOpened] = useState(false);
   const firstRender = useRef(true);
   const prevScrollHeight = useRef(0);
-
+  const initialMessagesLoaded = useRef(false);
   const debouncedHandleOnEnd = useCallback(
     debounce(async () => {
       if (isFetching || !ref.current) return;
@@ -49,20 +49,30 @@ export const useMessageList = ({
 
   useEffect(() => {
     if (!ref.current) return;
-    setTimeout(() => {
-      if (!ref.current) return;
-      const { scrollHeight, clientHeight, scrollTop } = ref.current;
-      const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
 
-      if (distanceFromBottom < 100) {
-        ref.current.scrollTo({
-          top: scrollHeight,
-          behavior: "smooth",
-        });
-      }
-    }, 50); // Даем время DOM обновиться
+    const frameId = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (!ref.current) return;
+        const { scrollHeight, clientHeight, scrollTop } = ref.current;
+        const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
+
+        if (distanceFromBottom < 100) {
+          ref.current.scrollTo({
+            top: scrollHeight,
+            behavior: "auto", // Мгновенный скролл
+          });
+        }
+      });
+    });
+
+    return () => cancelAnimationFrame(frameId);
   }, [messages]);
-
+  useEffect(() => {
+    if (messages.length > 0 && !initialMessagesLoaded.current && ref.current) {
+      ref.current.scrollTop = ref.current.scrollHeight;
+      initialMessagesLoaded.current = true;
+    }
+  }, [messages]);
   const handleUserScroll = () => {
     if (!ref.current) return;
     const { scrollHeight, clientHeight, scrollTop } = ref.current;
@@ -108,11 +118,11 @@ export const useMessageList = ({
       }
     };
   }, [isFetching]);
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.scrollTop = ref.current.scrollHeight;
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (ref.current) {
+  //     ref.current.scrollTop = ref.current.scrollHeight;
+  //   }
+  // }, []);
   return {
     handleCloseDialog,
     handleScrollToTop,

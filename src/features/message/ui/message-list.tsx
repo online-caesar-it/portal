@@ -36,12 +36,14 @@ const MessageList = ({
     let lastDate = "";
 
     return messages.map((it) => {
+      // Убедитесь, что ключи уникальны и стабильны
+      const uniqueKey = `${it.id}_${it.createdAt}`;
       const messageDate = moment(it.createdAt).format("D MMMM YYYY");
       const showDate = messageDate !== lastDate;
       lastDate = messageDate;
 
       return (
-        <div key={it.id}>
+        <div key={uniqueKey}>
           {showDate && (
             <Divider my="sm" label={messageDate} labelPosition="center" />
           )}
