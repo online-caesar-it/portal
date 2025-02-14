@@ -32,14 +32,16 @@ export const useMessageList = ({
 
       setTimeout(() => {
         if (!ref.current) return;
-        const newScrollHeight = ref.current.scrollHeight;
-        const heightDiff = newScrollHeight - prevScrollHeight.current;
+        requestAnimationFrame(() => {
+          if (!ref.current) return;
+          const newScrollHeight = ref.current.scrollHeight;
+          const heightDiff = newScrollHeight - prevScrollHeight.current;
+          ref.current.scrollTop += heightDiff;
 
-        ref.current.scrollTop += heightDiff;
-
-        if (userAtBottom) {
-          ref.current.scrollTop = ref.current.scrollHeight;
-        }
+          if (userAtBottom) {
+            ref.current.scrollTop = ref.current.scrollHeight;
+          }
+        });
       }, 50);
     }, 300),
     [handleOnEnd, isFetching]
@@ -47,15 +49,18 @@ export const useMessageList = ({
 
   useEffect(() => {
     if (!ref.current) return;
-    const { scrollHeight, clientHeight, scrollTop } = ref.current;
-    const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
+    setTimeout(() => {
+      if (!ref.current) return;
+      const { scrollHeight, clientHeight, scrollTop } = ref.current;
+      const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
 
-    if (distanceFromBottom < 100) {
-      ref.current.scrollTo({
-        top: scrollHeight,
-        behavior: "smooth",
-      });
-    }
+      if (distanceFromBottom < 100) {
+        ref.current.scrollTo({
+          top: scrollHeight,
+          behavior: "smooth",
+        });
+      }
+    }, 50); // Даем время DOM обновиться
   }, [messages]);
 
   const handleUserScroll = () => {
@@ -76,10 +81,12 @@ export const useMessageList = ({
   };
 
   const handleScrollToBottom = () => {
-    isScrollingToEnd.current = true;
-    if (ref.current) {
-      ref.current.scrollTop = ref.current.scrollHeight;
-    }
+    requestAnimationFrame(() => {
+      isScrollingToEnd.current = true;
+      if (ref.current) {
+        ref.current.scrollTop = ref.current.scrollHeight;
+      }
+    });
   };
 
   useEffect(() => {
@@ -96,9 +103,11 @@ export const useMessageList = ({
 
   useEffect(() => {
     return () => {
-      debouncedHandleOnEnd.cancel();
+      if (isFetching) {
+        debouncedHandleOnEnd.cancel();
+      }
     };
-  }, [debouncedHandleOnEnd]);
+  }, [isFetching]);
   useEffect(() => {
     if (ref.current) {
       ref.current.scrollTop = ref.current.scrollHeight;

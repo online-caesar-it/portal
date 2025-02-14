@@ -1,11 +1,12 @@
 import { Loader, ScrollArea, Dialog, Text, Divider } from "@mantine/core";
-import If from "~/shared/lib/components/if";
+// import If from "~/shared/lib/components/if";
 import MessageItem from "~/features/message/ui/message-item";
 import ScrollToEnd from "~/shared/lib/components/scroll-to-end";
 import { TMessageType } from "~/shared/types/chat-type";
 import { TUser } from "~/shared/types/user-type";
 import { useMessageList } from "~/entities/chat/hooks/useMessageList";
 import moment from "moment";
+import If from "~/shared/lib/components/if";
 
 const MessageList = ({
   messages,

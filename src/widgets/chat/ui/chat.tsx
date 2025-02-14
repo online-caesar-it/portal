@@ -1,7 +1,5 @@
 import { Flex, Modal } from "@mantine/core";
-
 import { useSession } from "~/shared/hooks/useSession";
-
 import SendMessageForm from "~/features/message/ui/send-message-form";
 import MessageList from "~/features/message/ui/message-list";
 import { useHandlerMessageWs } from "~/entities/chat/hooks/useHandlerMessageWs";
