@@ -23,7 +23,7 @@ const MainLayout = () => {
       >
         <AppShell.Header>
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <div>Logo</div>
+          <div>Logo 1</div>
         </AppShell.Header>
 
         <AppShell.Navbar p="md">
