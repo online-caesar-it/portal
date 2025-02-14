@@ -20,7 +20,7 @@ const getMessages = async (
   nextCursor: number;
 }> => {
   const { data } = await api.get(
-    `/chat/messages/get?chatId=${chatId}&cursor=${cursor}`
+    `/chat/messages/get?chatId=${chatId}&cursor=${cursor}&limit=${30}`
   );
   return data;
 };
