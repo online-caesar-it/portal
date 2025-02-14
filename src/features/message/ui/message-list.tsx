@@ -1,4 +1,4 @@
-import { Loader, ScrollArea, Dialog, Text, Divider } from "@mantine/core";
+import { Loader, Dialog, Text, Divider } from "@mantine/core";
 // import If from "~/shared/lib/components/if";
 import MessageItem from "~/features/message/ui/message-item";
 import ScrollToEnd from "~/shared/lib/components/scroll-to-end";
@@ -54,9 +54,13 @@ const MessageList = ({
   };
 
   return (
-    <ScrollArea viewportRef={ref}>
+    <div
+      ref={ref}
+      style={{
+        overflowY: "auto",
+      }}
+    >
       <ScrollToEnd onTop={handleScrollToTop} onEnd={handleScrollToBottom}>
-        <div className={"h-[20px]"}></div>
         <If when={!isLoading} elseComponent={<Loader />}>
           <If when={messages.length > 0} elseComponent={"Нет сообщений"}>
             {renderMessages()}
@@ -66,7 +70,7 @@ const MessageList = ({
       <Dialog opened={opened} onClose={handleCloseDialog} withCloseButton>
         <Text>Новое сообщение</Text>
       </Dialog>
-    </ScrollArea>
+    </div>
   );
 };
 
