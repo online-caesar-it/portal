@@ -29,7 +29,7 @@ export const useWebSocket = (url: string) => {
     return () => {
       socket.close();
     };
-  }, [token]);
+  }, [token, url]);
 
   const sendMessage = useCallback(
     (chatId: string, text: string) => {
