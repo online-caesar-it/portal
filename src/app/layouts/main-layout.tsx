@@ -9,7 +9,7 @@ import Sidebar from "~/widgets/navbar/ui/navbar";
 const MainLayout = () => {
   const [opened, { toggle }] = useDisclosure();
   useCheckedAuth();
-  useWebSocket();
+  useWebSocket("");
   return (
     <div>
       <AppShell

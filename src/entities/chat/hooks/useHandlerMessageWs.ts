@@ -11,7 +11,7 @@ export const useHandlerMessageWs = (chatId: string) => {
   const [newMessageReceived, setNewMessageReceived] = useState(false);
   const token = localStorageToken.getAccessToken();
 
-  const { ws } = useWebSocket();
+  const { ws } = useWebSocket("chat/ws");
   const [messages, setMessages] = useState<TMessageType[]>([]);
   const { data, isLoading, hasNextPage, fetchNextPage, isFetching } =
     useInfiniteQuery({

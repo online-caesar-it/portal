@@ -18,9 +18,9 @@ const MessageItem = ({ item, user }: { item: TMessageType; user?: TUser }) => {
           backgroundColor: isOwner ? "#0088cc" : "#8774e0",
           borderBottomRightRadius: isOwner ? 4 : 16,
           borderBottomLeftRadius: isOwner ? 16 : 4,
-          wordWrap: "break-word", // Перенос слов на новую строку
-          overflowWrap: "break-word", // Альтернатива для wordWrap
-          whiteSpace: "pre-line", // Сохраняет переносы строк, но позволяет тексту переноситься
+          wordWrap: "break-word",
+          overflowWrap: "break-word",
+          whiteSpace: "pre-line",
         }}
       >
         <Text size="sm" style={{ wordBreak: "break-word" }}>

@@ -28,6 +28,7 @@ const MessageList = ({
     opened,
   } = useMessageList({
     handleOnEnd,
+    messages,
     newMessageReceived,
   });
   const renderMessages = () => {

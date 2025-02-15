@@ -1,4 +1,4 @@
-import { Flex, Modal } from "@mantine/core";
+import { Flex, Modal, ScrollArea } from "@mantine/core";
 import { useSession } from "~/shared/hooks/useSession";
 // import SendMessageForm from "~/features/message/ui/send-message-form";
 import MessageList from "~/features/message/ui/message-list";
@@ -46,12 +46,14 @@ const Chat = ({ chatId, chat }: { chatId: string; chat?: TChat }) => {
       />
       <SendMessageForm chatId={chatId} sendMessage={sendMessage} />
       <Modal title={"Введите ключевое слово"} opened={opened} onClose={close}>
-        <MessageSearch
-          value={localSearch}
-          onChange={handleInputChange}
-          messages={messagesSearch}
-          isLoading={isMessagesSearchLoading}
-        />
+        <ScrollArea>
+          <MessageSearch
+            value={localSearch}
+            onChange={handleInputChange}
+            messages={messagesSearch}
+            isLoading={isMessagesSearchLoading}
+          />
+        </ScrollArea>
       </Modal>
     </Flex>
   );

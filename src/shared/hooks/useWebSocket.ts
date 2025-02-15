@@ -3,12 +3,12 @@ import { localStorageToken } from "../local-storage/token";
 import { ChatEvents } from "../enums/ws-enum";
 import { env } from "~/env";
 
-export const useWebSocket = () => {
+export const useWebSocket = (url: string) => {
   const [ws, setWs] = useState<WebSocket>();
   const token = localStorageToken.getAccessToken();
   const [newMessageReceived, setNewMessageReceived] = useState(false);
   useEffect(() => {
-    const wsUrl = new URL(env.VITE_WS_URL);
+    const wsUrl = new URL(env.VITE_WS_URL + url);
     wsUrl.searchParams.append("access_token", token || "");
 
     const socket = new WebSocket(wsUrl.toString(), "protocol");
