@@ -87,7 +87,9 @@ export const useMessageList = ({
   }, []);
 
   const handleScrollToTop = () => {
-    if (!isFetching) debouncedHandleOnEnd();
+    requestAnimationFrame(() => {
+      if (!isFetching) debouncedHandleOnEnd();
+    });
   };
 
   const handleScrollToBottom = () => {

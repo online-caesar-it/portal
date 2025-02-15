@@ -20,7 +20,7 @@ const SendMessageForm = ({
         form.reset();
       })}
     >
-      <Flex mt={50} align={"end"} gap={10}>
+      <Flex gap={10}>
         <TextInput
           radius={"lg"}
           flex={1}

@@ -1,6 +1,6 @@
 import { Flex, Modal } from "@mantine/core";
 import { useSession } from "~/shared/hooks/useSession";
-import SendMessageForm from "~/features/message/ui/send-message-form";
+// import SendMessageForm from "~/features/message/ui/send-message-form";
 import MessageList from "~/features/message/ui/message-list";
 import { useHandlerMessageWs } from "~/entities/chat/hooks/useHandlerMessageWs";
 import MessageTopPanel from "~/features/message/ui/message-top-panel";
@@ -10,9 +10,10 @@ import { debounce } from "lodash";
 import { useState, useCallback } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import MessageSearch from "~/features/message/ui/message-search";
+import SendMessageForm from "~/features/message/ui/send-message-form";
 
 const Chat = ({ chatId, chat }: { chatId: string; chat?: TChat }) => {
-  const { messages, sendMessage, isLoading, getNextPage, newMessageReceived } =
+  const { messages, isLoading, sendMessage, getNextPage, newMessageReceived } =
     useHandlerMessageWs(chatId);
   const { setSearch, search, messagesSearch, isMessagesSearchLoading } =
     useSearchMessages(chatId);
@@ -34,7 +35,7 @@ const Chat = ({ chatId, chat }: { chatId: string; chat?: TChat }) => {
     debouncedHandler(value);
   };
   return (
-    <Flex flex={1} h={"80vh"} direction={"column"} className={"overflow-auto"}>
+    <Flex flex={1} h={"90vh"} direction={"column"} className={"overflow-auto"}>
       <MessageTopPanel toggle={toggle} chat={chat} />
       <MessageList
         handleOnEnd={handleOnEnd}
