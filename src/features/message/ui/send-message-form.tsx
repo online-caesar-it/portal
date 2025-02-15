@@ -1,4 +1,4 @@
-import { Button, TextInput, Flex } from "@mantine/core";
+import { Button, Flex, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
 const SendMessageForm = ({
@@ -20,9 +20,10 @@ const SendMessageForm = ({
         form.reset();
       })}
     >
-      <Flex gap={10}>
-        <TextInput
+      <Flex align={"center"} gap={10}>
+        <Textarea
           radius={"lg"}
+          minRows={1}
           flex={1}
           {...form.getInputProps("message")}
           placeholder="Напишите сообщение..."

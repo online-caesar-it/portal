@@ -1,4 +1,4 @@
-import { Loader, Dialog, Text, Divider } from "@mantine/core";
+import { Loader, Dialog, Text, Divider, ScrollArea } from "@mantine/core";
 import MessageItem from "~/features/message/ui/message-item";
 import ScrollToEnd from "~/shared/lib/components/scroll-to-end";
 import { TMessageType } from "~/shared/types/chat-type";
@@ -28,7 +28,6 @@ const MessageList = ({
     opened,
   } = useMessageList({
     handleOnEnd,
-    messages,
     newMessageReceived,
   });
   const renderMessages = () => {
@@ -52,7 +51,7 @@ const MessageList = ({
   };
 
   return (
-    <div className={"mt-4 flex-1 overflow-auto"} ref={ref}>
+    <ScrollArea className={"mt-4 flex-1 overflow-auto"} viewportRef={ref}>
       <ScrollToEnd onTop={handleScrollToTop} onEnd={handleScrollToBottom}>
         <If when={!isLoading} elseComponent={<Loader />}>
           <If when={messages.length > 0} elseComponent={"Нет сообщений"}>
@@ -63,7 +62,7 @@ const MessageList = ({
       <Dialog opened={opened} onClose={handleCloseDialog} withCloseButton>
         <Text>Новое сообщение</Text>
       </Dialog>
-    </div>
+    </ScrollArea>
   );
 };
 

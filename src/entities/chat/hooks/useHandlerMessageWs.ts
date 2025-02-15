@@ -29,7 +29,6 @@ export const useHandlerMessageWs = (chatId: string) => {
         };
 
         ws.send(JSON.stringify(payload));
-        setNewMessageReceived((prevState) => !prevState);
 
         console.log("Message sent:", text);
       } else {
@@ -70,7 +69,7 @@ export const useHandlerMessageWs = (chatId: string) => {
         }
       };
     }
-  }, [token, newMessageReceived]);
+  }, [token, newMessageReceived, ws]);
   return {
     messages: _messages,
     sendMessage,
