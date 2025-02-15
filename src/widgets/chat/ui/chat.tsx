@@ -34,7 +34,7 @@ const Chat = ({ chatId, chat }: { chatId: string; chat?: TChat }) => {
     debouncedHandler(value);
   };
   return (
-    <Flex flex={1} h={"90vh"} direction={"column"} justify={"space-between"}>
+    <Flex flex={1} h={"80vh"} direction={"column"} className={"overflow-auto"}>
       <MessageTopPanel toggle={toggle} chat={chat} />
       <MessageList
         handleOnEnd={handleOnEnd}

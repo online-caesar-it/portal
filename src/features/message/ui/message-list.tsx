@@ -1,4 +1,4 @@
-import { Loader, Dialog, Text, Divider } from "@mantine/core";
+import { Loader, Dialog, Text, Divider, ScrollArea } from "@mantine/core";
 // import If from "~/shared/lib/components/if";
 import MessageItem from "~/features/message/ui/message-item";
 import ScrollToEnd from "~/shared/lib/components/scroll-to-end";
@@ -36,7 +36,6 @@ const MessageList = ({
     let lastDate = "";
 
     return messages.map((it) => {
-      // Убедитесь, что ключи уникальны и стабильны
       const uniqueKey = `${it.id}_${it.createdAt}`;
       const messageDate = moment(it.createdAt).format("D MMMM YYYY");
       const showDate = messageDate !== lastDate;
@@ -54,23 +53,20 @@ const MessageList = ({
   };
 
   return (
-    <div
-      ref={ref}
-      style={{
-        overflowY: "auto",
-      }}
-    >
+    <ScrollArea viewportRef={ref}>
       <ScrollToEnd onTop={handleScrollToTop} onEnd={handleScrollToBottom}>
         <If when={!isLoading} elseComponent={<Loader />}>
           <If when={messages.length > 0} elseComponent={"Нет сообщений"}>
-            {renderMessages()}
+            <div className={"flex-1 overflow-y-auto p-4 space-y-4"}>
+              {renderMessages()}
+            </div>
           </If>
         </If>
       </ScrollToEnd>
       <Dialog opened={opened} onClose={handleCloseDialog} withCloseButton>
         <Text>Новое сообщение</Text>
       </Dialog>
-    </div>
+    </ScrollArea>
   );
 };
 
