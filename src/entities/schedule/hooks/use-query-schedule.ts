@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { scheduleApi } from "../api/schedule.api";
+import { TSchedule, TScheduleDate } from "~/shared/types/schedule-type";
 
 const useGetWorkingDays = () => {
   const { data, isPending } = useQuery({
@@ -11,7 +12,17 @@ const useGetWorkingDays = () => {
     isPending,
   };
 };
-
+const useGetSchedule = (params: TScheduleDate) => {
+  const { data, isLoading } = useQuery<{ data: TSchedule[] }>({
+    queryKey: ["get-schedule", params],
+    queryFn: () => scheduleApi.getSchedule(params),
+  });
+  return {
+    data,
+    isLoading,
+  };
+};
 export const querySchedule = {
   useGetWorkingDays,
+  useGetSchedule,
 };

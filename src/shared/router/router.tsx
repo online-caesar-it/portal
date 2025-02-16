@@ -12,6 +12,7 @@ import { RoleEnum } from "../enums/role-enum";
 import ModulePage from "~/pages/module.page";
 import LessonPage from "~/pages/lesson.page";
 import EducatorPage from "~/pages/educator.page";
+import CalendarPage from "~/pages/calendar.page";
 
 export type TRoute = {
   Element: JSX.Element;
@@ -41,6 +42,12 @@ export const routes: TRoute[] = [
             path: "/chats",
             sidebar: true,
             title: "Общение",
+          },
+          {
+            Element: <CalendarPage />,
+            path: "/calendar",
+            sidebar: true,
+            title: "Календарь",
           },
         ],
       },
