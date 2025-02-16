@@ -11,6 +11,7 @@ import { TUserRoleType } from "../types/user-type";
 import { RoleEnum } from "../enums/role-enum";
 import ModulePage from "~/pages/module.page";
 import LessonPage from "~/pages/lesson.page";
+import EducatorPage from "~/pages/educator.page";
 
 export type TRoute = {
   Element: JSX.Element;
@@ -69,6 +70,12 @@ export const routes: TRoute[] = [
         path: "/admin/lesson/:id",
         title: "уроки",
         sidebar: false,
+      },
+      {
+        Element: <EducatorPage />,
+        path: "/admin/educators",
+        title: "Преподаватели",
+        sidebar: true,
       },
     ],
   },

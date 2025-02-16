@@ -5,7 +5,7 @@ import { TDirection } from "~/shared/types/direction-type";
 
 const DirectionList = ({ direction }: { direction?: TDirection[] }) => {
   return (
-    <Flex mt={"20px"} direction={"column"} gap={"xl"}>
+    <Flex mt={"20px"} miw={"30%"} direction={"column"} gap={"2xl"}>
       <List list={direction || []}>
         {(item) => <DirectionItem item={item} />}
       </List>

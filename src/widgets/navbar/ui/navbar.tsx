@@ -53,7 +53,7 @@ const RenderSidebarItem = ({ routes }: { routes: TRoute[] }) => {
                 </div>
               }
             >
-              <Accordion>
+              <Accordion className={"gap-2"}>
                 <Accordion.Item
                   key={item.path + "_" + index}
                   value={item.title ?? ""}
