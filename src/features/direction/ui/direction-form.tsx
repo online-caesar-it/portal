@@ -1,6 +1,6 @@
 import { Button, Flex, Loader, Select, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useMutateCreateDirection } from "~/entities/direction/hooks/useMutateCreateDirection";
+import { useMutateDirection } from "~/entities/direction/hooks/useMutateDirection";
 
 import If from "~/shared/lib/components/if";
 const durationData = [
@@ -38,7 +38,7 @@ const DirectionForm = ({
         value.trim().length === 0 ? "Поле период обязательно" : null,
     },
   });
-  const { submit, isPending } = useMutateCreateDirection({
+  const { submit, isPending } = useMutateDirection({
     setDirectionId,
     toggle,
   });
@@ -48,8 +48,8 @@ const DirectionForm = ({
         <TextInput
           disabled={!!directionId}
           withAsterisk
-          label={"Имя"}
-          placeholder="Введите имя направления"
+          label={"Наименование"}
+          placeholder="Введите Наименование направления"
           {...form.getInputProps("name")}
         />
         <TextInput
@@ -62,7 +62,7 @@ const DirectionForm = ({
         <TextInput
           disabled={!!directionId}
           withAsterisk
-          label={"Описание"}
+          label={"Стоимость"}
           placeholder="Введите стоимость направления"
           {...form.getInputProps("price")}
         />

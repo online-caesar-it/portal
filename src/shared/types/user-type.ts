@@ -18,6 +18,13 @@ export type TUser = {
 };
 export type TWorkingDays = number[];
 export type TEducatorCreate = {
-  user: TUser;
+  user: {
+    phone_number: string;
+    email: string;
+    firstName: string;
+    surname: string;
+    patronymic: string;
+  };
   workingDays: TWorkingDays;
+  directionIds: number[];
 };

@@ -1,5 +1,5 @@
 import { useDisclosure } from "@mantine/hooks";
-import EducatorCreateForm from "~/widgets/educator/ui/educator-create-form";
+import EducatorDrawerForm from "~/widgets/educator/ui/educator-drawer-form";
 import EducatorList from "~/widgets/educator/ui/educator-list";
 
 const EducatorPage = () => {
@@ -7,7 +7,7 @@ const EducatorPage = () => {
   return (
     <>
       <EducatorList toggle={toggle} />
-      <EducatorCreateForm onClose={close} open={opened} />
+      <EducatorDrawerForm onClose={close} open={opened} />
     </>
   );
 };

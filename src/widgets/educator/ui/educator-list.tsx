@@ -1,11 +1,11 @@
-import { useQueryEducator } from "~/entities/educator/hooks/use-query-educator";
+import { queryEducator } from "~/entities/educator/hooks/use-query-educator";
 import { Card, Avatar, Text, Group, Stack, Loader } from "@mantine/core";
 import List from "~/shared/lib/components/list";
 import If from "~/shared/lib/components/if";
 import ButtonCreate from "~/features/educator/ui/button-create";
 
 const EducatorList = ({ toggle }: { toggle: () => void }) => {
-  const { data: educators, isLoading } = useQueryEducator();
+  const { data: educators, isLoading } = queryEducator.useGetEducators();
   return (
     <Stack gap={"md"}>
       <Group>

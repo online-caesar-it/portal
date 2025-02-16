@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { directionApi } from "../api/direction.api";
 import { TDirection } from "~/shared/types/direction-type";
 
-export const useMutateCreateDirection = ({
+export const useMutateDirection = ({
   setDirectionId,
   toggle,
 }: {

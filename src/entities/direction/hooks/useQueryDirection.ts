@@ -5,7 +5,6 @@ export const useQueryDirection = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["get-all-direction"],
     queryFn: directionApi.getAllDirection,
-    queryHash: "15m",
   });
   return {
     data,

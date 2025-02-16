@@ -7,9 +7,9 @@ export const useWebSocket = <T>(entity: EEntitiesEnum) => {
   const [ws, setWs] = useState<WebSocket>();
   const [messages, setMessages] = useState<T[]>([]);
   const token = localStorageToken.getAccessToken();
-
+  const queryStr = entity ? `/${entity}` : "";
   useEffect(() => {
-    const wsUrl = new URL(env.VITE_WS_URL + entity);
+    const wsUrl = new URL(env.VITE_WS_URL + queryStr);
     wsUrl.searchParams.append("access_token", token || "");
 
     const socket = new WebSocket(wsUrl.toString(), "protocol");
@@ -54,7 +54,6 @@ export const useWebSocket = <T>(entity: EEntitiesEnum) => {
   );
 
   return {
-    ws,
     messages,
     sendMessage,
   };

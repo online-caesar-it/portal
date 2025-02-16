@@ -15,7 +15,7 @@ type TChatWebSocketMessage =
 
 export const useHandlerMessageWs = (chatId: string) => {
   const { messages: wsMessages, sendMessage } =
-    useWebSocket<TChatWebSocketMessage>(`/${EEntitiesEnum.CHAT}`);
+    useWebSocket<TChatWebSocketMessage>(EEntitiesEnum.CHAT);
   const [messages, setMessages] = useState<TMessageType[]>([]);
 
   const { data, isLoading, hasNextPage, fetchNextPage, isFetching } =
