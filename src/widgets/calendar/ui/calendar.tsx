@@ -5,10 +5,30 @@ import CalendarController from "~/features/calendar/ui/calendar-controller";
 import List from "~/shared/lib/components/list";
 import CalendarCell from "~/features/calendar/ui/calendar-cell";
 import { generateCalendarData } from "~/entities/schedule/utils/calendar-data";
+import { querySchedule } from "~/entities/schedule/hooks/use-query-schedule";
+import { TSchedule } from "~/shared/types/schedule-type";
 const daysName = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
-const Calendar = () => {
-  const [currentMonth, setCurrentMonth] = useState(moment());
+const Calendar = ({
+  handleClick,
+}: {
+  handleClick: (schedule: TSchedule) => void;
+}) => {
+  const [currentMonth, setCurrentMonth] = useState(moment().locale("rus"));
   const months = generateCalendarData(currentMonth);
+  const startDate = currentMonth
+    .clone()
+    .startOf("month")
+    .startOf("week")
+    .format("YYYY-MM-DD");
+  const endDate = currentMonth
+    .clone()
+    .endOf("month")
+    .endOf("week")
+    .format("YYYY-MM-DD");
+  const { data } = querySchedule.useGetSchedule({
+    startDate,
+    endDate,
+  });
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Grid justify="space-between" align="center" mb="md">
@@ -31,7 +51,15 @@ const Calendar = () => {
           )}
         </List>
         <List list={months}>
-          {({ day }) => <CalendarCell currentMonth={currentMonth} day={day} />}
+          {({ day, isoWeekday }) => (
+            <CalendarCell
+              schedules={data ?? []}
+              handleClick={(schedule) => handleClick(schedule)}
+              currentMonth={currentMonth}
+              day={day}
+              weekDay={isoWeekday}
+            />
+          )}
         </List>
       </Grid>
     </Card>

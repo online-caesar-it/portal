@@ -13,7 +13,7 @@ const useGetWorkingDays = () => {
   };
 };
 const useGetSchedule = (params: TScheduleDate) => {
-  const { data, isLoading } = useQuery<{ data: TSchedule[] }>({
+  const { data, isLoading } = useQuery<TSchedule[]>({
     queryKey: ["get-schedule", params],
     queryFn: () => scheduleApi.getSchedule(params),
   });

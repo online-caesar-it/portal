@@ -6,9 +6,7 @@ const getWorkingDays = async () => {
 };
 const createSchedule = async () => {};
 
-const getSchedule = async (
-  params: TScheduleDate
-): Promise<{ data: TSchedule[] }> => {
+const getSchedule = async (params: TScheduleDate): Promise<TSchedule[]> => {
   const { data } = await api.get(
     `/schedule/get?startDate=${params.startDate}&endDate=${params.endDate}`
   );

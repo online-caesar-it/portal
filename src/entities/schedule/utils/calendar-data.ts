@@ -1,22 +1,25 @@
 import moment from "moment";
 import { Moment } from "moment";
-
+export type TCalendarData = {
+  day: string;
+  currentMonth: string;
+  currentYear: string;
+  dayOfWeek: string;
+  isoWeekday: number;
+};
 export const generateCalendarData = (currentMonth: Moment) => {
-  const data = [];
-  const startDay = moment(currentMonth)
-    .startOf("month")
-    .startOf("week")
-    .add(1, "days");
-  const endDay = moment(currentMonth)
-    .endOf("month")
-    .endOf("week")
-    .add(1, "days");
-  for (let i = startDay; i <= endDay; i.add(1, "days")) {
+  const data: TCalendarData[] = [];
+
+  const startDay = moment(currentMonth).startOf("month").startOf("isoWeek");
+  const endDay = moment(currentMonth).endOf("month").endOf("isoWeek");
+
+  for (let i = startDay; i.isBefore(endDay); i.add(1, "days")) {
     data.push({
       day: i.format("DD"),
       currentMonth: i.format("MMMM"),
       currentYear: i.format("YYYY"),
-      dayOfWeek: startDay.format("dddd"),
+      dayOfWeek: i.format("dddd"),
+      isoWeekday: i.isoWeekday(),
     });
   }
 
