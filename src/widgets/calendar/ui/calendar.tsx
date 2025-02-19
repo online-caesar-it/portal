@@ -13,7 +13,7 @@ const Calendar = ({
 }: {
   handleClick: (schedule: TSchedule) => void;
 }) => {
-  const [currentMonth, setCurrentMonth] = useState(moment().locale("rus"));
+  const [currentMonth, setCurrentMonth] = useState(moment());
   const months = generateCalendarData(currentMonth);
   const startDate = currentMonth
     .clone()
@@ -29,6 +29,7 @@ const Calendar = ({
     startDate,
     endDate,
   });
+  console.log(months);
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Grid justify="space-between" align="center" mb="md">
@@ -51,7 +52,7 @@ const Calendar = ({
           )}
         </List>
         <List list={months}>
-          {({ day, isoWeekday }) => (
+          {({ day, isoWeekday, currentMonth }) => (
             <CalendarCell
               schedules={data ?? []}
               handleClick={(schedule) => handleClick(schedule)}

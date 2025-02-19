@@ -10,14 +10,20 @@ const CalendarPage = () => {
   const handleClick = (schedule: TSchedule) => {
     setSchedule(schedule);
     toggle();
-    close();
     console.log(opened);
   };
   console.log(schedule);
   return (
     <>
       <Calendar handleClick={handleClick} />
-      <CalendarDrawer />
+      {schedule && (
+        <CalendarDrawer
+          opened={opened}
+          onClose={close}
+          position={"right"}
+          schedule={schedule}
+        />
+      )}
     </>
   );
 };

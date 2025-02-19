@@ -1,5 +1,5 @@
 import { GridCol } from "@mantine/core";
-import moment, { Moment } from "moment";
+import moment from "moment";
 import { twMerge } from "tailwind-merge";
 import { EScheduleStatus } from "~/shared/enums/schedule-enum";
 import { TSchedule } from "~/shared/types/schedule-type";
@@ -12,12 +12,16 @@ const CalendarCell = ({
   schedules,
 }: {
   day: string;
-  currentMonth: Moment;
+  currentMonth: string;
   weekDay: number;
   handleClick: (schedule: TSchedule) => void;
   schedules: TSchedule[];
 }) => {
-  const date = moment(currentMonth).set("date", Number(day)).startOf("day");
+  const date = moment(
+    `${currentMonth} ${day} ${moment().year()}`,
+    "MMMM DD YYYY"
+  ).startOf("day");
+
   const isWeekend = weekDay === 6 || weekDay === 7;
   const isToday = date.isSame(moment(), "day");
 
@@ -30,13 +34,13 @@ const CalendarCell = ({
       <div
         onClick={() => findSchedules && handleClick(findSchedules)}
         className={twMerge(
-          "flex items-center cursor-pointer justify-center p-2 rounded-md transition-all",
+          "flex items-center cursor-pointer justify-center  h-16 p-2 rounded-md transition-all",
           "border border-gray-400 text-gray-100",
           isToday && "bg-blue-500 text-white font-bold",
-          isWeekend && " text-white opacity-50",
+          isWeekend && "text-white opacity-50",
           findSchedules &&
             findSchedules.status === EScheduleStatus.SCHEDULED &&
-            "bg-green-700 text-green-400 opacity-100"
+            "bg-emerald-800 text-emerald-400 opacity-100"
         )}
       >
         {day}
