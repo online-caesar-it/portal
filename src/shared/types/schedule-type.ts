@@ -23,3 +23,9 @@ export type TSchedule = {
   createdAt: string;
   directionId: string;
 };
+export type TScheduleMove = {
+  newEndTime: string;
+  newStartTime: string;
+  newDateLesson: string;
+  reason: string;
+};

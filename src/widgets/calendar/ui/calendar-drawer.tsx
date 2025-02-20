@@ -15,7 +15,7 @@ import moment from "moment";
 import { useSession } from "~/shared/hooks/useSession";
 import { RoleEnum } from "~/shared/enums/role-enum";
 import List from "~/shared/lib/components/list";
-import ScheduleRequestForm from "~/features/schedule/ui/schedule-request-form";
+import CalendarForms from "./calendar-forms";
 const statusColors = {
   [EScheduleStatus.SCHEDULED]: {
     color: "green",
@@ -84,19 +84,12 @@ const CalendarDrawer = ({
           </Group>
         </Stack>
       </Card>
-
-      {isTransferFormOpen && (
-        <ScheduleRequestForm
-          onSubmit={() => {}}
-          onClose={() => setTransferFormOpen(false)}
-        />
-      )}
-      {isCancelFormOpen && (
-        <ScheduleRequestForm
-          onSubmit={() => {}}
-          onClose={() => setCancelFormOpen(false)}
-        />
-      )}
+      <CalendarForms
+        onCloseCancel={() => setCancelFormOpen(false)}
+        onCloseTransfer={() => setTransferFormOpen(false)}
+        isCancelFormOpen={isCancelFormOpen}
+        isTransferFormOpen={isTransferFormOpen}
+      />
     </Drawer>
   );
 };

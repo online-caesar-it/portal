@@ -1,29 +1,32 @@
 import { useForm } from "@mantine/form";
-import { Button, TextInput, Group } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
+import { TextInput } from "@mantine/core";
+import { DateInput } from "@mantine/dates";
+import ReasonField from "./reason-field";
+import ScheduleButtonsActions from "./schedule-action-buttons";
 
-const ScheduleRequestForm = ({
-  onSubmit,
-  onClose,
-}: {
-  onSubmit: () => void;
-  onClose: () => void;
-}) => {
+const ScheduleTransferForm = ({ onClose }: { onClose: () => void }) => {
   const form = useForm({
     initialValues: {
       newDateLesson: null,
       newStartTime: "",
       newEndTime: "",
+      reason: "",
     },
     validate: {
       newDateLesson: (value) => (!value ? "Выберите дату" : null),
       newStartTime: (value) => (value ? null : "Укажите время начала"),
       newEndTime: (value) => (value ? null : "Укажите время окончания"),
+      reason: (value) => (value ? null : "Укажите причину"),
     },
   });
   return (
-    <form onSubmit={form.onSubmit(onSubmit)}>
-      <DatePicker {...form.getInputProps("newDateLesson")} />
+    <form onSubmit={form.onSubmit(() => {})}>
+      <DateInput
+        label="Дата урока"
+        placeholder="Выберите дату"
+        {...form.getInputProps("newDateLesson")}
+        withAsterisk
+      />
       <TextInput
         label="Начало урока"
         placeholder="HH:MM"
@@ -36,14 +39,10 @@ const ScheduleRequestForm = ({
         {...form.getInputProps("newEndTime")}
         withAsterisk
       />
-      <Group mt="md">
-        <Button variant="default" onClick={onClose}>
-          Отмена
-        </Button>
-        <Button type="submit">Запросить перенос</Button>
-      </Group>
+      <ReasonField form={form} />
+      <ScheduleButtonsActions onClose={onClose} />
     </form>
   );
 };
 
-export default ScheduleRequestForm;
+export default ScheduleTransferForm;
