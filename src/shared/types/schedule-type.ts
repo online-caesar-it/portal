@@ -1,4 +1,5 @@
 import { EScheduleStatus } from "../enums/schedule-enum";
+import { TUser } from "./user-type";
 
 export type TWorkingDays = {
   dayName: string;
@@ -16,6 +17,8 @@ export type TSchedule = {
   startTime: string;
   endTime: string;
   status: EScheduleStatus;
+  educator: TUser;
+  students: TUser[];
   userId: string;
   createdAt: string;
   directionId: string;

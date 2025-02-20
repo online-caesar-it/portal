@@ -12,7 +12,10 @@ import { EScheduleStatus } from "~/shared/enums/schedule-enum";
 import { TSchedule } from "~/shared/types/schedule-type";
 import { useState } from "react";
 import moment from "moment";
-
+import { useSession } from "~/shared/hooks/useSession";
+import { RoleEnum } from "~/shared/enums/role-enum";
+import List from "~/shared/lib/components/list";
+import ScheduleRequestForm from "~/features/schedule/ui/schedule-request-form";
 const statusColors = {
   [EScheduleStatus.SCHEDULED]: {
     color: "green",
@@ -34,8 +37,8 @@ const CalendarDrawer = ({
 }: { schedule: TSchedule } & DrawerProps) => {
   const [isTransferFormOpen, setTransferFormOpen] = useState(false);
   const [isCancelFormOpen, setCancelFormOpen] = useState(false);
-  // const { session } = useSession();
-  // const role = session?.data.role;
+  const { session } = useSession();
+  const role = session?.data.role;
   return (
     <Drawer title="Урок" {...rest}>
       <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -47,7 +50,7 @@ const CalendarDrawer = ({
           </Group>
           <Group>
             <Text size="lg">Дата:</Text>
-            <Text>{moment(schedule.dateLesson).format("MM-DD")}</Text>
+            <Text>{moment(schedule.dateLesson).format("MM.DD dddd")}</Text>
           </Group>
           <Group>
             <Text size="lg">Время:</Text>
@@ -56,8 +59,20 @@ const CalendarDrawer = ({
             </Text>
           </Group>
           <Group>
-            <Text size="lg">Преподаватель:</Text>
-            <Text>{schedule.userId}</Text>
+            <Text size="lg">
+              {role === RoleEnum.student ? "Преподаватель:" : "Группа:"}
+            </Text>
+            {role === RoleEnum.student ? (
+              <Text>
+                {schedule.educator.firstName + " " + schedule.educator.surname}
+              </Text>
+            ) : (
+              <List list={schedule.students}>
+                {({ firstName, surname }) => (
+                  <Text>{firstName + " " + surname}</Text>
+                )}
+              </List>
+            )}
           </Group>
           <Group mt="md">
             <Button color="blue" onClick={() => setTransferFormOpen(true)}>
@@ -70,8 +85,18 @@ const CalendarDrawer = ({
         </Stack>
       </Card>
 
-      {isTransferFormOpen && <Text>Форма запроса переноса...</Text>}
-      {isCancelFormOpen && <Text>Форма запроса отмены...</Text>}
+      {isTransferFormOpen && (
+        <ScheduleRequestForm
+          onSubmit={() => {}}
+          onClose={() => setTransferFormOpen(false)}
+        />
+      )}
+      {isCancelFormOpen && (
+        <ScheduleRequestForm
+          onSubmit={() => {}}
+          onClose={() => setCancelFormOpen(false)}
+        />
+      )}
     </Drawer>
   );
 };
