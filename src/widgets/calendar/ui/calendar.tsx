@@ -11,7 +11,7 @@ const daysName = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 const Calendar = ({
   handleClick,
 }: {
-  handleClick: (schedule: TSchedule) => void;
+  handleClick: (schedule: TSchedule[]) => void;
 }) => {
   const [currentMonth, setCurrentMonth] = useState(moment());
   const months = generateCalendarData(currentMonth);
@@ -29,7 +29,6 @@ const Calendar = ({
     startDate,
     endDate,
   });
-  console.log(months);
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Grid justify="space-between" align="center" mb="md">
@@ -55,7 +54,9 @@ const Calendar = ({
           {({ day, isoWeekday, currentMonth }) => (
             <CalendarCell
               schedules={data ?? []}
-              handleClick={(schedule) => handleClick(schedule)}
+              handleClick={(schedule) => {
+                handleClick(schedule);
+              }}
               currentMonth={currentMonth}
               day={day}
               weekDay={isoWeekday}

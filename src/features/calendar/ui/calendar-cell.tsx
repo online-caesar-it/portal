@@ -14,7 +14,7 @@ const CalendarCell = ({
   day: string;
   currentMonth: string;
   weekDay: number;
-  handleClick: (schedule: TSchedule) => void;
+  handleClick: (schedule: TSchedule[]) => void;
   schedules: TSchedule[];
 }) => {
   const date = moment(
@@ -28,11 +28,15 @@ const CalendarCell = ({
   const findSchedules = schedules.find((it) =>
     moment(it.dateLesson).startOf("day").isSame(date)
   );
-
+  const schedulesData = schedules.filter((it) => {
+    return (
+      moment(it.dateLesson).format("YYYY-MM-DD") === date.format("YYYY-MM-DD")
+    );
+  });
   return (
     <GridCol span={1}>
       <div
-        onClick={() => findSchedules && handleClick(findSchedules)}
+        onClick={() => schedulesData && handleClick(schedulesData)}
         className={twMerge(
           "flex items-center cursor-pointer justify-center  h-16 p-2 rounded-md transition-all",
           "border border-gray-400 text-gray-100",

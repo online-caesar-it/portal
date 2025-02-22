@@ -5,18 +5,16 @@ import Calendar from "~/widgets/calendar/ui/calendar";
 import CalendarDrawer from "~/widgets/calendar/ui/calendar-drawer";
 
 const CalendarPage = () => {
-  const [schedule, setSchedule] = useState<TSchedule>();
+  const [schedule, setSchedule] = useState<TSchedule[]>([]);
   const [opened, { toggle, close }] = useDisclosure();
-  const handleClick = (schedule: TSchedule) => {
+  const handleClick = (schedule: TSchedule[]) => {
     setSchedule(schedule);
     toggle();
-    console.log(opened);
   };
-  console.log(schedule);
   return (
     <>
       <Calendar handleClick={handleClick} />
-      {schedule && (
+      {schedule.length > 0 && (
         <CalendarDrawer
           opened={opened}
           onClose={close}

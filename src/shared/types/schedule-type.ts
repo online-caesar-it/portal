@@ -1,10 +1,6 @@
 import { EScheduleStatus } from "../enums/schedule-enum";
 import { TUser } from "./user-type";
 
-export type TWorkingDays = {
-  dayName: string;
-  dayNumber: number;
-};
 export type TScheduleDate = {
   startDate: string;
   endDate: string;
@@ -23,9 +19,19 @@ export type TSchedule = {
   createdAt: string;
   directionId: string;
 };
+export type TWorkingDays = number[];
+export type TWorkingTime = {
+  startTime: string;
+  endTime: string;
+};
 export type TScheduleMove = {
   newEndTime: string;
   newStartTime: string;
   newDateLesson: string;
   reason: string;
+  scheduleId: string;
+};
+export type TScheduleCreate = {
+  workingDays: TWorkingDays;
+  timeIntervals: TWorkingTime[];
 };

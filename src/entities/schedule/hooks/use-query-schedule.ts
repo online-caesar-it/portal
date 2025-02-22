@@ -1,6 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { scheduleApi } from "../api/schedule.api";
-import { TSchedule, TScheduleDate } from "~/shared/types/schedule-type";
+import {
+  TSchedule,
+  TScheduleCreate,
+  TScheduleDate,
+  TScheduleMove,
+} from "~/shared/types/schedule-type";
+import { AxiosError } from "axios";
 
 const useGetWorkingDays = () => {
   const { data, isPending } = useQuery({
@@ -22,7 +28,74 @@ const useGetSchedule = (params: TScheduleDate) => {
     isLoading,
   };
 };
+const useCreateSchedule = (close: () => void) => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: scheduleApi.createSchedule,
+    mutationKey: ["create-schedule"],
+    onSuccess: () => {
+      close();
+    },
+  });
+  const submit = (body: TScheduleCreate) => {
+    const data = body.workingDays.map((it) => Number(it));
+    mutate({
+      ...body,
+      workingDays: data,
+    });
+  };
+  return {
+    submit,
+    isPending,
+  };
+};
+const useCreateTransferSchedule = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: () => void;
+  onError: (error: string) => void;
+}) => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: scheduleApi.sendScheduleTransfer,
+    mutationKey: ["create-transfer-schedule"],
+    onSuccess: () => onSuccess(),
+    onError: (error: AxiosError<{ message: string }>) =>
+      onError(error.response?.data.message ?? ""),
+  });
+  const submit = (body: TScheduleMove) => {
+    mutate(body);
+  };
+  return {
+    submit,
+    isPending,
+  };
+};
+const useCreateCancelSchedule = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: () => void;
+  onError: (error: string) => void;
+}) => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: scheduleApi.sendScheduleCancel,
+    mutationKey: ["create-cancel-schedule"],
+    onSuccess: () => onSuccess(),
+    onError: (error: AxiosError<{ message: string }>) =>
+      onError(error.response?.data.message ?? ""),
+  });
+  const submit = (body: Pick<TScheduleMove, "reason">) => {
+    mutate(body);
+  };
+  return {
+    submit,
+    isPending,
+  };
+};
 export const querySchedule = {
   useGetWorkingDays,
   useGetSchedule,
+  useCreateSchedule,
+  useCreateTransferSchedule,
+  useCreateCancelSchedule,
 };

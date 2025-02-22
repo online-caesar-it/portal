@@ -1,6 +1,7 @@
 import { api } from "~/shared/api/api";
 import {
   TSchedule,
+  TScheduleCreate,
   TScheduleDate,
   TScheduleMove,
 } from "~/shared/types/schedule-type";
@@ -8,7 +9,10 @@ const getWorkingDays = async () => {
   const { data } = await api.get("/schedule/working-days/get");
   return data;
 };
-const createSchedule = async () => {};
+const createSchedule = async (body: TScheduleCreate) => {
+  const { data } = await api.post("/schedule/create", body);
+  return data;
+};
 
 const getSchedule = async (params: TScheduleDate): Promise<TSchedule[]> => {
   const { data } = await api.get(

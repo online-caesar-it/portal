@@ -7,13 +7,7 @@ type TAdapterData = {
   value: string;
   label: string;
 };
-const FormCreateEducator = ({
-  workingDays,
-  directions,
-}: {
-  workingDays: TAdapterData[];
-  directions: TAdapterData[];
-}) => {
+const FormCreateEducator = ({ directions }: { directions: TAdapterData[] }) => {
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -24,7 +18,6 @@ const FormCreateEducator = ({
         surname: "",
         patronymic: "",
       },
-      workingDays: [],
       directionIds: [],
     },
     validate: {
@@ -40,8 +33,6 @@ const FormCreateEducator = ({
             ? null
             : "Введите телефон в формате +7 (999) 999-99-99",
       },
-      workingDays: (value) =>
-        value.length > 0 ? null : "Выберите хотя бы один рабочий день",
       directionIds: (value) =>
         value.length > 0 ? null : "Выберите хотя бы одно направление",
     },
@@ -82,16 +73,8 @@ const FormCreateEducator = ({
           value={form.getValues().user.phone_number}
           onChange={(e) => {
             const maskedValue = input.telephoneInputMask(e.target.value);
-            console.log(maskedValue);
             form.setFieldValue("user.phone_number", maskedValue);
           }}
-        />
-        <MultiSelect
-          label="Рабочие дни"
-          withAsterisk
-          placeholder="Выберите рабочие дни"
-          data={workingDays}
-          {...form.getInputProps("workingDays")}
         />
         <MultiSelect
           label="Направления"

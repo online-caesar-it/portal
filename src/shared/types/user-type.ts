@@ -16,7 +16,6 @@ export type TUser = {
   config: TUserConfig;
   avatar: string;
 };
-export type TWorkingDays = number[];
 export type TEducatorCreate = {
   user: {
     phone_number: string;
@@ -25,6 +24,5 @@ export type TEducatorCreate = {
     surname: string;
     patronymic: string;
   };
-  workingDays: TWorkingDays;
   directionIds: number[];
 };

@@ -6,15 +6,22 @@ const CalendarForms = ({
   isCancelFormOpen,
   onCloseCancel,
   onCloseTransfer,
+  scheduleId,
 }: {
   isCancelFormOpen: boolean;
   isTransferFormOpen: boolean;
   onCloseTransfer: () => void;
   onCloseCancel: () => void;
+  scheduleId: string;
 }) => {
   return (
     <>
-      {isTransferFormOpen && <ScheduleTransferForm onClose={onCloseTransfer} />}
+      {isTransferFormOpen && (
+        <ScheduleTransferForm
+          scheduleId={scheduleId}
+          onClose={onCloseTransfer}
+        />
+      )}
       {isCancelFormOpen && <ScheduleCancelForm onClose={onCloseCancel} />}
     </>
   );

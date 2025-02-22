@@ -13,6 +13,7 @@ import ModulePage from "~/pages/module.page";
 import LessonPage from "~/pages/lesson.page";
 import EducatorPage from "~/pages/educator.page";
 import CalendarPage from "~/pages/calendar.page";
+import ProfilePage from "~/pages/profile.page";
 
 export type TRoute = {
   Element: JSX.Element;
@@ -48,6 +49,12 @@ export const routes: TRoute[] = [
             path: "/calendar",
             sidebar: true,
             title: "Календарь",
+          },
+          {
+            Element: <ProfilePage />,
+            path: "/profile",
+            sidebar: true,
+            title: "Профиль",
           },
         ],
       },
