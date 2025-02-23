@@ -13,7 +13,7 @@ export type TSchedule = {
   startTime: string;
   endTime: string;
   status: EScheduleStatus;
-  educator: TUser;
+  educator?: TUser;
   students: TUser[];
   userId: string;
   createdAt: string;
@@ -34,4 +34,7 @@ export type TScheduleMove = {
 export type TScheduleCreate = {
   workingDays: TWorkingDays;
   timeIntervals: TWorkingTime[];
+};
+export type TScheduleWithDirection = TScheduleDate & {
+  directionId: string;
 };

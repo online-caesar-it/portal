@@ -11,3 +11,13 @@ export const useQueryDirection = () => {
     isLoading,
   };
 };
+export const useQueryMyDirection = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["my-direction"],
+    queryFn: directionApi.getMyDirection,
+  });
+  return {
+    data,
+    isLoading,
+  };
+};

@@ -5,6 +5,7 @@ import {
   TScheduleCreate,
   TScheduleDate,
   TScheduleMove,
+  TScheduleWithDirection,
 } from "~/shared/types/schedule-type";
 import { AxiosError } from "axios";
 
@@ -92,11 +93,21 @@ const useCreateCancelSchedule = ({
     isPending,
   };
 };
-const useGetScheduleEducator = () => {};
+const useGetScheduleByDirection = (params: TScheduleWithDirection) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["get-schedule-by-direction", params],
+    queryFn: () => scheduleApi.getScheduleByDirection(params),
+  });
+  return {
+    data,
+    isLoading,
+  };
+};
 export const querySchedule = {
   useGetWorkingDays,
   useGetSchedule,
   useCreateSchedule,
   useCreateTransferSchedule,
   useCreateCancelSchedule,
+  useGetScheduleByDirection,
 };

@@ -9,7 +9,12 @@ const getAllDirection = async (): Promise<TDirection[]> => {
   const { data } = await api.get("/direction/get-all");
   return data;
 };
+const getMyDirection = async (): Promise<TDirection[]> => {
+  const { data } = await api.get("/direction/users/get-all");
+  return data;
+};
 export const directionApi = {
   createDirection,
   getAllDirection,
+  getMyDirection,
 };
