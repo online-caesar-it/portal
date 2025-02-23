@@ -1,8 +1,9 @@
 import { queryEducator } from "~/entities/educator/hooks/use-query-educator";
-import { Card, Avatar, Text, Group, Stack, Loader } from "@mantine/core";
+import { Text, Group, Stack, Loader } from "@mantine/core";
 import List from "~/shared/lib/components/list";
 import If from "~/shared/lib/components/if";
 import ButtonCreate from "~/features/educator/ui/button-create";
+import UserCard from "~/features/user/ui/user-card";
 
 const EducatorList = ({ toggle }: { toggle: () => void }) => {
   const { data: educators, isLoading } = queryEducator.useGetEducators();
@@ -25,25 +26,7 @@ const EducatorList = ({ toggle }: { toggle: () => void }) => {
           elseComponent={<Text>Преподавателей пока нет</Text>}
         >
           <List list={educators ?? []}>
-            {(educator) => (
-              <Card
-                key={educator.id}
-                shadow="sm"
-                padding="md"
-                radius="md"
-                withBorder
-              >
-                <Group>
-                  <Avatar src={educator.avatar} radius="xl" size="lg" />
-                  <Stack gap={2}>
-                    <Text size="lg">{educator.firstName}</Text>
-                    <Text size="sm" color="dimmed">
-                      {educator.config.email}
-                    </Text>
-                  </Stack>
-                </Group>
-              </Card>
-            )}
+            {(educator) => <UserCard user={educator} />}
           </List>
         </If>
       </If>

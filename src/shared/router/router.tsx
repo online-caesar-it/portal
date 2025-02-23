@@ -14,6 +14,7 @@ import LessonPage from "~/pages/lesson.page";
 import EducatorPage from "~/pages/educator.page";
 import CalendarPage from "~/pages/calendar.page";
 import ProfilePage from "~/pages/profile.page";
+import StudentsPage from "~/pages/students.page";
 
 export type TRoute = {
   Element: JSX.Element;
@@ -89,6 +90,12 @@ export const routes: TRoute[] = [
         Element: <EducatorPage />,
         path: "/admin/educators",
         title: "Преподаватели",
+        sidebar: true,
+      },
+      {
+        Element: <StudentsPage />,
+        path: "/admin/students",
+        title: "Студенты",
         sidebar: true,
       },
     ],

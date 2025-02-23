@@ -1,22 +1,15 @@
 import { Button, Drawer, Flex, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import ScheduleCreateForm from "~/features/schedule/ui/schedule-create-form";
-import ScheduleList from "~/features/schedule/ui/schedule-list";
-import { querySchedule } from "~/entities/schedule/hooks/use-query-schedule";
 import moment from "moment";
+import { useGroupScheduleByDate } from "~/entities/schedule/hooks/use-group-schedule-by-date";
+import ScheduleGroupedList from "~/features/schedule/ui/schedule-grouped-list";
 
-const Profile = () => {
+const ProfileScheduleEducator = () => {
   const [opened, { toggle, close }] = useDisclosure();
-  const today = moment();
-  const currentWeekStart = today.clone().startOf("week");
-  const nextWeekEnd = today.clone().add(1, "week").endOf("week");
+  const { data, currentWeekStart, nextWeekEnd, groupedData } =
+    useGroupScheduleByDate();
 
-  const startDate = currentWeekStart.format("YYYY-MM-DD");
-  const endDate = nextWeekEnd.format("YYYY-MM-DD");
-  const { data } = querySchedule.useGetSchedule({
-    startDate,
-    endDate,
-  });
   return (
     <Flex direction={"column"} w={"50%"}>
       <Text size={"xl"}>Расписание</Text>
@@ -40,9 +33,9 @@ const Profile = () => {
       >
         <ScheduleCreateForm close={close} />
       </Drawer>
-      <ScheduleList data={data ?? []} />
+      <ScheduleGroupedList data={groupedData ?? {}} />
     </Flex>
   );
 };
 
-export default Profile;
+export default ProfileScheduleEducator;

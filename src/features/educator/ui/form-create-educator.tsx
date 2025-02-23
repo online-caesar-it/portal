@@ -1,6 +1,7 @@
-import { Button, Flex, MultiSelect, TextInput } from "@mantine/core";
+import { Button, Flex, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { queryEducator } from "~/entities/educator/hooks/use-query-educator";
+import DirectionSelect from "~/features/direction/ui/direction-select";
 import { input } from "~/shared/lib/input";
 import { validators } from "~/shared/lib/validators";
 type TAdapterData = {
@@ -76,13 +77,7 @@ const FormCreateEducator = ({ directions }: { directions: TAdapterData[] }) => {
             form.setFieldValue("user.phone_number", maskedValue);
           }}
         />
-        <MultiSelect
-          label="Направления"
-          withAsterisk
-          placeholder="Выберите направления"
-          data={directions}
-          {...form.getInputProps("directionIds")}
-        />
+        <DirectionSelect form={form} data={directions} />
       </Flex>
       <Button type="submit" fullWidth mt="lg">
         Создать преподавателя

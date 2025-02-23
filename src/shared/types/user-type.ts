@@ -26,3 +26,7 @@ export type TEducatorCreate = {
   };
   directionIds: number[];
 };
+export type TParamsPage = {
+  limit: number;
+  offset: number;
+};

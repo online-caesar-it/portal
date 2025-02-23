@@ -1,11 +1,11 @@
 import { TextInput } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 
-type ReasonFieldProps<T> = {
+type TReasonFieldProps<T> = {
   form: UseFormReturnType<T>;
 };
 
-const ReasonField = <T,>({ form }: ReasonFieldProps<T>) => {
+const ReasonField = <T,>({ form }: TReasonFieldProps<T>) => {
   return (
     <TextInput
       label="Причина переноса"

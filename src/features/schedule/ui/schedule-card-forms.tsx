@@ -1,4 +1,4 @@
-import { Button, Card, Group, Stack, Text } from "@mantine/core";
+import { Button, Card, Flex, Group, Stack, Text } from "@mantine/core";
 import { TSchedule } from "~/shared/types/schedule-type";
 import moment from "moment";
 import { RoleEnum } from "~/shared/enums/role-enum";
@@ -14,8 +14,14 @@ const ScheduleCardForms = ({ schedule }: { schedule: TSchedule }) => {
   const [isCancelFormOpen, setCancelFormOpen] = useState(false);
   return (
     <>
-      <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <Stack>
+      <Card
+        shadow="sm"
+        padding="lg"
+        radius="md"
+        withBorder
+        className="max-h-[350px] overflow-y-auto"
+      >
+        <Stack className="overflow-y-auto">
           <Group>
             <ScheduleStatus status={schedule.status} />
           </Group>
@@ -29,22 +35,27 @@ const ScheduleCardForms = ({ schedule }: { schedule: TSchedule }) => {
               {schedule.startTime} - {schedule.endTime}
             </Text>
           </Group>
-          <Group>
+          <Flex
+            direction={role === RoleEnum.EDUCATOR ? "column" : "row"}
+            gap={role === RoleEnum.EDUCATOR ? "lg" : "sm"}
+          >
             <Text size="lg">
-              {role === RoleEnum.student ? "Преподаватель:" : "Группа:"}
+              {role === RoleEnum.student ? "Преподаватель:" : "Студенты:"}
             </Text>
             {role === RoleEnum.student ? (
-              <Text>
+              <Text color={"blue"} size={"lg"}>
                 {schedule.educator.firstName + " " + schedule.educator.surname}
               </Text>
             ) : (
               <List list={schedule.students}>
                 {({ firstName, surname }) => (
-                  <Text>{firstName + " " + surname}</Text>
+                  <Text color={"blue"} size={"lg"}>
+                    {firstName + " " + surname}
+                  </Text>
                 )}
               </List>
             )}
-          </Group>
+          </Flex>
           <Group mt="md">
             <Button color="blue" onClick={() => setTransferFormOpen(true)}>
               Запросить перенос

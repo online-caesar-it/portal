@@ -1,7 +1,7 @@
-import Profile from "~/widgets/profile/ui/profile";
+import ProfileTabs from "~/widgets/profile/ui/profile-tabs";
 
 const ProfilePage = () => {
-  return <Profile />;
+  return <ProfileTabs />;
 };
 
 export default ProfilePage;

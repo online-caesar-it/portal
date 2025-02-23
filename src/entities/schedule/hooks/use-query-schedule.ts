@@ -92,6 +92,7 @@ const useCreateCancelSchedule = ({
     isPending,
   };
 };
+const useGetScheduleEducator = () => {};
 export const querySchedule = {
   useGetWorkingDays,
   useGetSchedule,
