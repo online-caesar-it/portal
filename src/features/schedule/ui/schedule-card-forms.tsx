@@ -44,7 +44,9 @@ const ScheduleCardForms = ({ schedule }: { schedule: TSchedule }) => {
             </Text>
             {role === RoleEnum.student ? (
               <Text color={"blue"} size={"lg"}>
-                {schedule.educator.firstName + " " + schedule.educator.surname}
+                {schedule?.educator?.firstName +
+                  " " +
+                  schedule?.educator?.surname}
               </Text>
             ) : (
               <List list={schedule.students}>
