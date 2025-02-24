@@ -1,24 +1,30 @@
 import { useForm } from "@mantine/form";
 import ReasonField from "./reason-field";
 import ScheduleButtonsActions from "./schedule-action-buttons";
+import { querySchedule } from "~/entities/schedule/hooks/use-query-schedule";
 
-const ScheduleCancelForm = ({ onClose }: { onClose: () => void }) => {
+const ScheduleCancelForm = ({
+  onClose,
+  scheduleId,
+}: {
+  onClose: () => void;
+  scheduleId: string;
+}) => {
   const form = useForm({
     initialValues: {
-      newDateLesson: null,
-      newStartTime: "",
-      newEndTime: "",
       reason: "",
+      scheduleId,
     },
     validate: {
-      newDateLesson: (value) => (!value ? "Выберите дату" : null),
-      newStartTime: (value) => (value ? null : "Укажите время начала"),
-      newEndTime: (value) => (value ? null : "Укажите время окончания"),
       reason: (value) => (value ? null : "Укажите причину"),
     },
   });
+  const { submit } = querySchedule.useCreateCancelSchedule({
+    onSuccess: onClose,
+    onError: () => {},
+  });
   return (
-    <form onSubmit={form.onSubmit(() => {})}>
+    <form onSubmit={form.onSubmit(submit)}>
       <ReasonField form={form} />
       <ScheduleButtonsActions onClose={onClose} />
     </form>

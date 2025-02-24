@@ -1,4 +1,4 @@
-import { Card, Title, Text, Grid, Avatar, GridCol } from "@mantine/core";
+import { Card, Title, Text, Avatar, Flex } from "@mantine/core";
 import { RoleEnum } from "~/shared/enums/role-enum";
 import { useSession } from "~/shared/hooks/useSession";
 
@@ -8,11 +8,9 @@ const ProfileData = () => {
   const user = session?.data;
   return (
     <Card shadow="sm" padding="lg" radius="md" mt={"lg"}>
-      <Grid>
-        <GridCol span={2}>
-          <Avatar size={"xl"} src={user?.avatar} alt="User avatar" />
-        </GridCol>
-        <GridCol span={8}>
+      <Flex align={"center"} gap={"lg"}>
+        <Avatar size={"xl"} src={user?.avatar} alt="User avatar" />
+        <Flex direction={"column"}>
           <Title order={2}>
             {user?.firstName + " " + user?.surname + " " + user?.patronymic}
           </Title>
@@ -20,8 +18,8 @@ const ProfileData = () => {
             Роль:{" "}
             {user?.role === RoleEnum.student ? "Студент" : "Преподаватель"}
           </Text>
-        </GridCol>
-      </Grid>
+        </Flex>
+      </Flex>
       <Text mt="md" size="xl" color="dimmed">
         Телефон: {user?.config.phone_number || "Не указан"}
       </Text>

@@ -22,7 +22,9 @@ const CalendarForms = ({
           onClose={onCloseTransfer}
         />
       )}
-      {isCancelFormOpen && <ScheduleCancelForm onClose={onCloseCancel} />}
+      {isCancelFormOpen && (
+        <ScheduleCancelForm scheduleId={scheduleId} onClose={onCloseCancel} />
+      )}
     </>
   );
 };

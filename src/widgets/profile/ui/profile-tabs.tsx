@@ -9,6 +9,7 @@ import { useSession } from "~/shared/hooks/useSession";
 import ProfileData from "./profile-data";
 import ProfileScheduleEducator from "./profile-schedule-educator";
 import If from "~/shared/lib/components/if";
+import ScheduleForAttachedList from "~/features/schedule/ui/schedule-for-attached-list";
 
 const ProfileTabs = () => {
   const { session } = useSession();
@@ -33,6 +34,7 @@ const ProfileTabs = () => {
         <ProfileData />
       </Tabs.Panel>
       <Tabs.Panel
+        className={"w-[100%]"}
         value={
           session?.data.role === RoleEnum.student
             ? SCHEDULE_STUDENT_TAB
@@ -41,7 +43,7 @@ const ProfileTabs = () => {
       >
         <If
           when={session?.data.role === RoleEnum.EDUCATOR}
-          elseComponent={<></>}
+          elseComponent={<ScheduleForAttachedList />}
         >
           <ProfileScheduleEducator />
         </If>

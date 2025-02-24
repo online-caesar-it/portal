@@ -1,6 +1,7 @@
 import { api } from "~/shared/api/api";
 import {
   TSchedule,
+  TScheduleAttach,
   TScheduleCreate,
   TScheduleDate,
   TScheduleMove,
@@ -43,6 +44,10 @@ const getScheduleByDirection = async (
   );
   return data;
 };
+const attachedStudentToSchedule = async (body: TScheduleAttach) => {
+  const { data } = await api.post("/schedule/attach-student", body);
+  return data;
+};
 export const scheduleApi = {
   getWorkingDays,
   createSchedule,
@@ -50,4 +55,5 @@ export const scheduleApi = {
   sendScheduleCancel,
   sendScheduleTransfer,
   getScheduleByDirection,
+  attachedStudentToSchedule,
 };

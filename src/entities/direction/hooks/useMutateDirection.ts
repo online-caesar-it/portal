@@ -1,6 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { directionApi } from "../api/direction.api";
-import { TDirection } from "~/shared/types/direction-type";
+import {
+  TDirection,
+  TDirectionAttachedUser,
+} from "~/shared/types/direction-type";
 
 export const useMutateDirection = ({
   setDirectionId,
@@ -24,6 +27,24 @@ export const useMutateDirection = ({
       ...values,
       duration: values.duration.split(" ")[0],
     });
+  };
+  return {
+    submit,
+    isPending,
+  };
+};
+export const useAttachUserToDirection = (onSuccess: () => void) => {
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["attach-user-to-direction"],
+    mutationFn: directionApi.attachUserToDirection,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get-students"] });
+      onSuccess();
+    },
+  });
+  const submit = (values: TDirectionAttachedUser) => {
+    mutate(values);
   };
   return {
     submit,

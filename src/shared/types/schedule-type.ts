@@ -32,9 +32,21 @@ export type TScheduleMove = {
   scheduleId: string;
 };
 export type TScheduleCreate = {
+  workingDays: {
+    day: number;
+    timeIntervals: {
+      startTime: string;
+      endTime: string;
+    }[];
+  }[];
+};
+export type TScheduleCreateFormatted = {
   workingDays: TWorkingDays;
-  timeIntervals: TWorkingTime[];
+  intervalsByDay: TWorkingTime[];
 };
 export type TScheduleWithDirection = TScheduleDate & {
   directionId: string;
+};
+export type TScheduleAttach = {
+  scheduleId: string;
 };

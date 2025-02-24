@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { scheduleApi } from "../api/schedule.api";
 import {
   TSchedule,
@@ -30,19 +30,17 @@ const useGetSchedule = (params: TScheduleDate) => {
   };
 };
 const useCreateSchedule = (close: () => void) => {
+  const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationFn: scheduleApi.createSchedule,
     mutationKey: ["create-schedule"],
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get-schedule"] });
       close();
     },
   });
   const submit = (body: TScheduleCreate) => {
-    const data = body.workingDays.map((it) => Number(it));
-    mutate({
-      ...body,
-      workingDays: data,
-    });
+    mutate(body);
   };
   return {
     submit,
@@ -103,6 +101,31 @@ const useGetScheduleByDirection = (params: TScheduleWithDirection) => {
     isLoading,
   };
 };
+const useAttachedStudentToSchedule = ({
+  onSuccess,
+}: {
+  onSuccess: () => void;
+}) => {
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useMutation({
+    mutationFn: scheduleApi.attachedStudentToSchedule,
+    mutationKey: ["attached-student-to-schedule"],
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["get-schedule-by-direction"],
+      });
+      onSuccess();
+    },
+  });
+  const submit = (scheduleId: string) =>
+    mutate({
+      scheduleId,
+    });
+  return {
+    submit,
+    isPending,
+  };
+};
 export const querySchedule = {
   useGetWorkingDays,
   useGetSchedule,
@@ -110,4 +133,5 @@ export const querySchedule = {
   useCreateTransferSchedule,
   useCreateCancelSchedule,
   useGetScheduleByDirection,
+  useAttachedStudentToSchedule,
 };
