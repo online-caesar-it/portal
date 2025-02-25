@@ -2,10 +2,14 @@ import { api } from "~/shared/api/api";
 import {
   TSchedule,
   TScheduleAttach,
+  TScheduleByStatus,
   TScheduleCreate,
   TScheduleDate,
   TScheduleMove,
+  TScheduleRequest,
+  TScheduleTransferUpdate,
   TScheduleWithDirection,
+  TScheduleWithFilters,
 } from "~/shared/types/schedule-type";
 import { TUser } from "~/shared/types/user-type";
 const getWorkingDays = async () => {
@@ -48,6 +52,38 @@ const attachedStudentToSchedule = async (body: TScheduleAttach) => {
   const { data } = await api.post("/schedule/attach-student", body);
   return data;
 };
+const getScheduledFilter = async (
+  params: TScheduleWithFilters
+): Promise<TSchedule[]> => {
+  const { data } = await api.get(
+    `/schedule/get/filter?startDate=${params.startDate}&endDate=${params.endDate}&userId=${params.id}`
+  );
+  return data;
+};
+const getScheduleTransfer = async (
+  params: TScheduleByStatus
+): Promise<TScheduleRequest[]> => {
+  const { data } = await api.get(
+    `/schedule/transfer/by-status?status=${params.status}`
+  );
+  return data;
+};
+const getScheduleCancel = async (
+  params: TScheduleByStatus
+): Promise<TScheduleRequest[]> => {
+  const { data } = await api.get(
+    `/schedule/cancel/by-status?status=${params.status}`
+  );
+  return data;
+};
+const updateTransferSchedule = async (body: TScheduleTransferUpdate) => {
+  const { data } = await api.put("/schedule/transfer/update", body);
+  return data;
+};
+const updateCancelSchedule = async (body: TScheduleTransferUpdate) => {
+  const { data } = await api.put("/schedule/cancel/update", body);
+  return data;
+};
 export const scheduleApi = {
   getWorkingDays,
   createSchedule,
@@ -56,4 +92,9 @@ export const scheduleApi = {
   sendScheduleTransfer,
   getScheduleByDirection,
   attachedStudentToSchedule,
+  getScheduledFilter,
+  getScheduleTransfer,
+  getScheduleCancel,
+  updateTransferSchedule,
+  updateCancelSchedule,
 };

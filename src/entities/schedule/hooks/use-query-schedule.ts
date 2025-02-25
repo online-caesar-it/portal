@@ -2,10 +2,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { scheduleApi } from "../api/schedule.api";
 import {
   TSchedule,
+  TScheduleByStatus,
   TScheduleCreate,
   TScheduleDate,
   TScheduleMove,
+  TScheduleTransferUpdate,
   TScheduleWithDirection,
+  TScheduleWithFilters,
 } from "~/shared/types/schedule-type";
 import { AxiosError } from "axios";
 
@@ -126,6 +129,79 @@ const useAttachedStudentToSchedule = ({
     isPending,
   };
 };
+const useGetScheduledFilter = (params: TScheduleWithFilters) => {
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["get-schedule-by-direction", params],
+    queryFn: () => scheduleApi.getScheduledFilter(params),
+  });
+  return {
+    data,
+    isLoading,
+    refetch,
+  };
+};
+const useGetScheduleTransfer = (params: TScheduleByStatus) => {
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["get-schedule-transfer-status", params],
+    queryFn: () => scheduleApi.getScheduleTransfer(params),
+  });
+  return {
+    data,
+    isLoading,
+    refetch,
+  };
+};
+const useGetScheduleCancel = (params: TScheduleByStatus) => {
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["get-schedule-cancel-status", params],
+    queryFn: () => scheduleApi.getScheduleCancel(params),
+  });
+  return {
+    data,
+    isLoading,
+    refetch,
+  };
+};
+const useUpdateTransferSchedule = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["update-transfer"],
+    mutationFn: (body: TScheduleTransferUpdate) =>
+      scheduleApi.updateTransferSchedule(body),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: ["get-schedule-transfer-status"],
+      }),
+  });
+  const submit = (values: TScheduleTransferUpdate) => {
+    mutate(values);
+  };
+  return {
+    submit,
+    isPending,
+  };
+};
+const useUpdateCancelSchedule = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["update-transfer"],
+    mutationFn: (body: TScheduleTransferUpdate) =>
+      scheduleApi.updateCancelSchedule(body),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: ["get-schedule-cancel-status"],
+      }),
+  });
+  const submit = (values: TScheduleTransferUpdate) => {
+    mutate(values);
+  };
+  return {
+    submit,
+    isPending,
+  };
+};
 export const querySchedule = {
   useGetWorkingDays,
   useGetSchedule,
@@ -134,4 +210,9 @@ export const querySchedule = {
   useCreateCancelSchedule,
   useGetScheduleByDirection,
   useAttachedStudentToSchedule,
+  useGetScheduledFilter,
+  useGetScheduleTransfer,
+  useGetScheduleCancel,
+  useUpdateCancelSchedule,
+  useUpdateTransferSchedule,
 };

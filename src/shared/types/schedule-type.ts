@@ -1,4 +1,7 @@
-import { EScheduleStatus } from "../enums/schedule-enum";
+import {
+  EScheduleStatus,
+  EScheduleTransferStatus,
+} from "../enums/schedule-enum";
 import { TUser } from "./user-type";
 
 export type TScheduleDate = {
@@ -49,4 +52,18 @@ export type TScheduleWithDirection = TScheduleDate & {
 };
 export type TScheduleAttach = {
   scheduleId: string;
+};
+export type TScheduleWithFilters = Pick<TUser, "id"> & TScheduleDate;
+export type TScheduleByStatus = {
+  status: EScheduleTransferStatus;
+};
+export type TScheduleRequest = {
+  educator: TUser;
+  id: string;
+  reason: string;
+  status: EScheduleTransferStatus;
+};
+export type TScheduleTransferUpdate = {
+  scheduleTransferId: string;
+  status: EScheduleTransferStatus;
 };
