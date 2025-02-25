@@ -1,4 +1,4 @@
-import { Flex, Tabs } from "@mantine/core";
+import { Tabs } from "@mantine/core";
 import {
   SCHEDULE_EDUCATOR,
   SCHEDULE_REQUEST_CANCELED,
