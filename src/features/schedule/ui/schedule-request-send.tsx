@@ -8,6 +8,7 @@ import {
   Text,
   Flex,
 } from "@mantine/core";
+import ScheduleRequestStatus from "~/entities/schedule/ui/schedule-request-status";
 import { TScheduleRequest } from "~/shared/types/schedule-type";
 
 const ScheduleRequestSend = ({
@@ -32,14 +33,11 @@ const ScheduleRequestSend = ({
         data.map((request) => (
           <Card key={request.id} shadow="sm" p="md" radius="md" withBorder>
             <Group>
-              <Text>{request.status}</Text>
               <Text color="dimmed">
                 {request.educator.firstName} {request.educator.surname}
               </Text>
             </Group>
-            <Text size="sm" mt="xs">
-              Статус запроса: {request.status}
-            </Text>
+            <ScheduleRequestStatus status={request.status} />
             <Text size="sm" mt="xs">
               Преподаватель: {request.educator.firstName}{" "}
               {request.educator.surname}
@@ -47,7 +45,7 @@ const ScheduleRequestSend = ({
             <Text>Причина: {request.reason}</Text>
             <Flex align={"center"} gap={"lg"}>
               <Button
-                onClick={() => approve(request.id)}
+                onClick={() => reject(request.id)}
                 variant="outline"
                 color="red"
                 mt="sm"
@@ -55,7 +53,7 @@ const ScheduleRequestSend = ({
                 Отклонить запрос
               </Button>
               <Button
-                onClick={() => reject(request.id)}
+                onClick={() => approve(request.id)}
                 variant="outline"
                 color="blue"
                 mt="sm"
