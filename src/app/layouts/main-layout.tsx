@@ -2,14 +2,16 @@ import { AppShell, Burger } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Outlet } from "react-router";
 import SignOut from "~/features/auth/ui/sign-out";
+import { EEntitiesEnum } from "~/shared/enums/entities";
 import { useCheckedAuth } from "~/shared/hooks/useCheckedAuth";
 import { useWebSocket } from "~/shared/hooks/useWebSocket";
+import LogoIcon from "~/shared/ui/icons/logo-icon";
 import Sidebar from "~/widgets/navbar/ui/navbar";
 
 const MainLayout = () => {
   const [opened, { toggle }] = useDisclosure();
   useCheckedAuth();
-  useWebSocket("");
+  useWebSocket(EEntitiesEnum.INIT);
   return (
     <div>
       <AppShell
@@ -23,7 +25,7 @@ const MainLayout = () => {
       >
         <AppShell.Header>
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <div>Logo 1</div>
+          <LogoIcon />
         </AppShell.Header>
 
         <AppShell.Navbar p="md">

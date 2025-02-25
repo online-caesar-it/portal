@@ -1,14 +1,15 @@
 import { useState, useEffect, useCallback } from "react";
 import { localStorageToken } from "../local-storage/token";
-import { ChatEvents } from "../enums/ws-enum";
 import { env } from "~/env";
+import { EEntitiesEnum } from "../enums/entities";
 
-export const useWebSocket = (url: string) => {
+export const useWebSocket = <T>(entity: EEntitiesEnum) => {
   const [ws, setWs] = useState<WebSocket>();
+  const [messages, setMessages] = useState<T[]>([]);
   const token = localStorageToken.getAccessToken();
-  const [newMessageReceived, setNewMessageReceived] = useState(false);
+  const queryStr = entity ? `/${entity}` : "";
   useEffect(() => {
-    const wsUrl = new URL(env.VITE_WS_URL + url);
+    const wsUrl = new URL(env.VITE_WS_URL + queryStr);
     wsUrl.searchParams.append("access_token", token || "");
 
     const socket = new WebSocket(wsUrl.toString(), "protocol");
@@ -16,6 +17,15 @@ export const useWebSocket = (url: string) => {
 
     socket.onopen = () => {
       console.log("WebSocket connected");
+    };
+
+    socket.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        setMessages((prev) => [...prev, data]);
+      } catch (error) {
+        console.error("WebSocket message parsing error:", error);
+      }
     };
 
     socket.onclose = () => {
@@ -29,20 +39,13 @@ export const useWebSocket = (url: string) => {
     return () => {
       socket.close();
     };
-  }, [token, url]);
+  }, [token, entity]);
 
   const sendMessage = useCallback(
-    (chatId: string, text: string) => {
+    (payload: object) => {
       if (ws && ws.readyState === WebSocket.OPEN) {
-        const payload = {
-          event: ChatEvents.SEND_MESSAGE,
-          payload: { chatId, text },
-        };
-
         ws.send(JSON.stringify(payload));
-        setNewMessageReceived((prevState) => !prevState);
-
-        console.log("Message sent:", text);
+        console.log("WebSocket message sent:", payload);
       } else {
         console.error("WebSocket is not open. Cannot send message.");
       }
@@ -51,8 +54,7 @@ export const useWebSocket = (url: string) => {
   );
 
   return {
-    ws,
+    messages,
     sendMessage,
-    newMessageReceived,
   };
 };

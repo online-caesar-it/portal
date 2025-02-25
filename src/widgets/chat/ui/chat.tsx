@@ -13,7 +13,7 @@ import MessageSearch from "~/features/message/ui/message-search";
 import SendMessageForm from "~/features/message/ui/send-message-form";
 
 const Chat = ({ chatId, chat }: { chatId: string; chat?: TChat }) => {
-  const { messages, isLoading, sendMessage, getNextPage, newMessageReceived } =
+  const { messages, isLoading, sendMessage, getNextPage } =
     useHandlerMessageWs(chatId);
   const { setSearch, search, messagesSearch, isMessagesSearchLoading } =
     useSearchMessages(chatId);
@@ -42,7 +42,7 @@ const Chat = ({ chatId, chat }: { chatId: string; chat?: TChat }) => {
         user={session?.data}
         messages={messages.reverse()}
         isLoading={isLoading}
-        newMessageReceived={newMessageReceived}
+        newMessageReceived={false}
       />
       <SendMessageForm chatId={chatId} sendMessage={sendMessage} />
       <Modal title={"Введите ключевое слово"} opened={opened} onClose={close}>

@@ -5,3 +5,7 @@ export type TDirection = {
   price: string;
   duration: string;
 };
+export type TDirectionAttachedUser = {
+  directionIds: string[];
+  userId: string;
+};

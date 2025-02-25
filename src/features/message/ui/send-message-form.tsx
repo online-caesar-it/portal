@@ -3,11 +3,10 @@ import { useForm } from "@mantine/form";
 import React from "react";
 
 const SendMessageForm = ({
-  chatId,
   sendMessage,
 }: {
   chatId: string;
-  sendMessage: (chatId: string, value: string) => void;
+  sendMessage: (value: string) => void;
 }) => {
   const form = useForm({
     initialValues: {
@@ -16,7 +15,7 @@ const SendMessageForm = ({
   });
 
   const onSubmit = () => {
-    sendMessage(chatId, form.values.message);
+    sendMessage(form.values.message);
     form.reset();
   };
 
@@ -29,7 +28,7 @@ const SendMessageForm = ({
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>
-      <Flex align={"center"} mt={10} gap={10}>
+      <Flex align={"center"} gap={10}>
         <Textarea
           radius={"sm"}
           minRows={1}

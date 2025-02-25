@@ -5,7 +5,16 @@ export const useQueryDirection = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["get-all-direction"],
     queryFn: directionApi.getAllDirection,
-    queryHash: "15m",
+  });
+  return {
+    data,
+    isLoading,
+  };
+};
+export const useQueryMyDirection = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["my-direction"],
+    queryFn: directionApi.getMyDirection,
   });
   return {
     data,

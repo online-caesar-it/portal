@@ -22,8 +22,8 @@ const Direction = () => {
   };
   return (
     <If when={!isLoading} elseComponent={<Loader />}>
-      <Flex w={"40%"} direction={"column"}>
-        <Button w={"60%"} size={"md"} onClick={toggle} variant={"gradient"}>
+      <Flex w={"100%"} direction={"column"} align={"start"}>
+        <Button size={"md"} onClick={toggle} variant={"gradient"}>
           Создать направление
         </Button>
         <DirectionList direction={data} />

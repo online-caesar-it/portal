@@ -1,6 +1,6 @@
-import { TMessageType } from "~/shared/types/chat-type";
 import { debounce } from "lodash";
 import { useRef, useState, useCallback, useEffect } from "react";
+import { TMessageType } from "~/shared/types/chat-type";
 
 export const useMessageList = ({
   handleOnEnd,
@@ -18,6 +18,7 @@ export const useMessageList = ({
   const firstRender = useRef(true);
   const prevScrollHeight = useRef(0);
   const initialMessagesLoaded = useRef(false);
+
   const debouncedHandleOnEnd = useCallback(
     debounce(async () => {
       if (isFetching || !ref.current) return;
@@ -67,12 +68,14 @@ export const useMessageList = ({
 
     return () => cancelAnimationFrame(frameId);
   }, [messages]);
+
   useEffect(() => {
     if (messages.length > 0 && !initialMessagesLoaded.current && ref.current) {
       ref.current.scrollTop = ref.current.scrollHeight;
       initialMessagesLoaded.current = true;
     }
   }, [messages]);
+
   const handleUserScroll = () => {
     if (!ref.current) return;
     const { scrollHeight, clientHeight, scrollTop } = ref.current;
@@ -120,11 +123,7 @@ export const useMessageList = ({
       }
     };
   }, [isFetching, debouncedHandleOnEnd]);
-  // useEffect(() => {
-  //   if (ref.current) {
-  //     ref.current.scrollTop = ref.current.scrollHeight;
-  //   }
-  // }, []);
+
   return {
     handleCloseDialog,
     handleScrollToTop,

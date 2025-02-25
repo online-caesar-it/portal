@@ -16,3 +16,17 @@ export type TUser = {
   config: TUserConfig;
   avatar: string;
 };
+export type TEducatorCreate = {
+  user: {
+    phone_number: string;
+    email: string;
+    firstName: string;
+    surname: string;
+    patronymic: string;
+  };
+  directionIds: number[];
+};
+export type TParamsPage = {
+  limit: number;
+  offset: number;
+};

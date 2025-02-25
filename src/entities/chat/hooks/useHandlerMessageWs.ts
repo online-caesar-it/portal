@@ -1,18 +1,23 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { chatApi } from "~/entities/chat/api/chat.api";
 import { TMessageType } from "~/shared/types/chat-type";
 import { ChatEvents } from "~/shared/enums/ws-enum";
-
-import { localStorageToken } from "~/shared/local-storage/token";
 import { useWebSocket } from "~/shared/hooks/useWebSocket";
+import { EEntitiesEnum } from "~/shared/enums/entities";
+
+type TChatWebSocketMessage =
+  | { event: ChatEvents.NEW_MESSAGES; payload: TMessageType }
+  | {
+      event: ChatEvents.SEND_MESSAGE;
+      payload: { chatId: string; text: string };
+    };
 
 export const useHandlerMessageWs = (chatId: string) => {
-  const [newMessageReceived, setNewMessageReceived] = useState(false);
-  const token = localStorageToken.getAccessToken();
-
-  const { ws } = useWebSocket("/chat");
+  const { messages: wsMessages, sendMessage } =
+    useWebSocket<TChatWebSocketMessage>(EEntitiesEnum.CHAT);
   const [messages, setMessages] = useState<TMessageType[]>([]);
+
   const { data, isLoading, hasNextPage, fetchNextPage, isFetching } =
     useInfiniteQuery({
       queryKey: ["get-messages", chatId],
@@ -20,61 +25,46 @@ export const useHandlerMessageWs = (chatId: string) => {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
       initialPageParam: 0,
     });
-  const sendMessage = useCallback(
-    (chatId: string, text: string) => {
-      if (ws && ws.readyState === WebSocket.OPEN) {
-        const payload = {
-          event: ChatEvents.SEND_MESSAGE,
-          payload: { chatId, text },
-        };
 
-        ws.send(JSON.stringify(payload));
-
-        console.log("Message sent:", text);
-      } else {
-        console.error("WebSocket is not open. Cannot send message.");
+  useMemo(() => {
+    wsMessages.forEach((msg) => {
+      if (msg.event === ChatEvents.NEW_MESSAGES) {
+        setMessages((prev) => [...prev, msg.payload]);
       }
-    },
-    [ws]
-  );
+    });
+  }, [wsMessages]);
+
   const getMessages = () => {
     const _messages = data?.pages?.flatMap((it) => it.items) ?? [];
-    console.log(_messages);
     messages.forEach((item) => {
-      const exist = _messages.find((it) => it.id === item.id);
-
-      if (!exist) {
+      if (!_messages.find((it) => it.id === item.id)) {
         _messages.unshift(item);
       }
     });
     return _messages;
   };
+
   const _messages = useMemo(() => getMessages(), [data, messages]);
+
+  const sendChatMessage = useCallback(
+    (text: string) => {
+      sendMessage({
+        event: ChatEvents.SEND_MESSAGE,
+        payload: { chatId, text },
+      });
+    },
+    [chatId, sendMessage]
+  );
+
   const getNextPage = async () => {
-    if (isFetching || !hasNextPage) {
-      return;
-    }
+    if (isFetching || !hasNextPage) return;
     await fetchNextPage();
   };
-  useEffect(() => {
-    if (ws) {
-      ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        if (data.event === ChatEvents.NEW_MESSAGES) {
-          setMessages((prevMessages) => [...prevMessages, data.payload]);
-          console.log(event);
-          setNewMessageReceived((prevState) => !prevState);
-        } else {
-          console.warn("Unknown event:", data.event);
-        }
-      };
-    }
-  }, [token, newMessageReceived, ws]);
+
   return {
     messages: _messages,
-    sendMessage,
+    sendMessage: sendChatMessage,
     isLoading,
     getNextPage,
-    newMessageReceived,
   };
 };
