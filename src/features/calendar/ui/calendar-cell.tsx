@@ -44,7 +44,9 @@ const CalendarCell = ({
           isWeekend && "text-white opacity-50",
           findSchedules &&
             findSchedules.status === EScheduleStatus.SCHEDULED &&
-            "bg-emerald-800 text-emerald-400 opacity-100"
+            "bg-emerald-800 text-emerald-400 opacity-100",
+          findSchedules?.status === EScheduleStatus.END &&
+            "bg-red-400 text-red-200 opacity-100"
         )}
       >
         {day}

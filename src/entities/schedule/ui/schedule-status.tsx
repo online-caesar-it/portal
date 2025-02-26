@@ -14,6 +14,10 @@ const statusColors = {
     color: "blue",
     text: "Перенесено",
   },
+  [EScheduleStatus.END]: {
+    color: "green",
+    text: "Занятие прошло",
+  },
 };
 
 const ScheduleStatus = ({ status }: { status: EScheduleStatus }) => {

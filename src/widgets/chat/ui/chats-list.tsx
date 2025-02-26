@@ -1,4 +1,4 @@
-import { Flex, Loader, Text, TextInput } from "@mantine/core";
+import { Button, Flex, Loader, Text, TextInput } from "@mantine/core";
 import { useCallback, useState } from "react";
 import { useQueryMyChats } from "~/entities/chat/hooks/useQueryMyChats";
 import If from "~/shared/lib/components/if";
@@ -7,11 +7,13 @@ import ChatItem from "~/features/chat/chat-item";
 import Chat from "./chat";
 import { debounce } from "lodash";
 import { TChat } from "~/shared/types/chat-type";
+import ChatCreateModal from "./chat-create-modal";
 
 const ChatsList = () => {
   const { chats, isLoading, searchString, setSearchString } = useQueryMyChats();
   const [localSearch, setLocalSearch] = useState(searchString);
   const [isVisibleChat, setIsVisibleChat] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [chatId, setChatId] = useState("");
   const [chat, setChat] = useState<TChat>();
   const handleOpenChat = (id: string) => {
@@ -42,6 +44,8 @@ const ChatsList = () => {
         h="100%"
         style={{ overflowY: "auto" }}
       >
+        <Button onClick={() => setIsOpenModal(true)}>Создать чат</Button>
+        <ChatCreateModal setShow={setIsOpenModal} show={isOpenModal} />
         <TextInput
           value={localSearch}
           onChange={(e) => handleInputChange(e.target.value)}

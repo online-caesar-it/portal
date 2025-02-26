@@ -1,8 +1,16 @@
 import { Group, Button, Radio } from "@mantine/core";
 import StudentList from "~/features/student/ui/student-list";
 import { useChatByEducator } from "../hooks/useChatByEducator";
-import { TUser } from "~/shared/types/user-type";
-const ChatCreateForm = ({ students }: { students?: TUser[] }) => {
+import { TUser, TUserRoleType } from "~/shared/types/user-type";
+const ChatCreateForm = ({
+  students,
+  role,
+  close,
+}: {
+  students?: TUser[];
+  role: TUserRoleType;
+  close: () => void;
+}) => {
   const {
     selectedStudentId,
     submit,
@@ -10,7 +18,7 @@ const ChatCreateForm = ({ students }: { students?: TUser[] }) => {
     handleSelectStudent,
     filteredStudents,
     studentsWithChats,
-  } = useChatByEducator(students);
+  } = useChatByEducator(close, students);
 
   return (
     <form
@@ -30,7 +38,9 @@ const ChatCreateForm = ({ students }: { students?: TUser[] }) => {
             return (
               <Radio
                 key={student.id}
-                label={`Студент ${student.firstName} ${student.surname}`}
+                label={`${role === "student" ? "Преподаватель" : "Студент"} ${
+                  student.firstName
+                } ${student.surname}`}
                 value={student.id}
                 checked={selectedStudentId === student.id}
                 disabled={isDisabled}

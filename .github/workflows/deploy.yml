@@ -40,4 +40,4 @@ jobs:
             git pull origin main
             npm install
             npm run build
-            cp -R /root/portal/dist/* /var/www/portal.caesar-it.ru/
+            cp -R /root/prod/portal/dist/* /var/www/portal.caesar-it.ru/

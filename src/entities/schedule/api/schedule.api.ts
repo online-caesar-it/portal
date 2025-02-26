@@ -1,5 +1,6 @@
 import { api } from "~/shared/api/api";
 import {
+  TLessonToSchedule,
   TSchedule,
   TScheduleAttach,
   TScheduleByStatus,
@@ -84,6 +85,14 @@ const updateCancelSchedule = async (body: TScheduleTransferUpdate) => {
   const { data } = await api.put("/schedule/cancel/update", body);
   return data;
 };
+const attachLessonToSchedule = async (body: TLessonToSchedule) => {
+  const { data } = await api.post("/schedule/lesson/attach", body);
+  return data;
+};
+const endSchedule = async (body: TScheduleAttach) => {
+  const { data } = await api.put("/schedule/update/end", body);
+  return data;
+};
 export const scheduleApi = {
   getWorkingDays,
   createSchedule,
@@ -97,4 +106,6 @@ export const scheduleApi = {
   getScheduleCancel,
   updateTransferSchedule,
   updateCancelSchedule,
+  attachLessonToSchedule,
+  endSchedule,
 };

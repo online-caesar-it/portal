@@ -1,6 +1,6 @@
 import { useForm } from "@mantine/form";
-import { Dialog, Text, TextInput } from "@mantine/core";
-import { DateInput } from "@mantine/dates";
+import { Dialog, Text } from "@mantine/core";
+import { DateInput, TimeInput } from "@mantine/dates";
 import ReasonField from "./reason-field";
 import ScheduleButtonsActions from "./schedule-action-buttons";
 import { TScheduleMove } from "~/shared/types/schedule-type";
@@ -55,20 +55,20 @@ const ScheduleTransferForm = ({
         {...form.getInputProps("newDateLesson")}
         withAsterisk
       />
-      <TextInput
+      <TimeInput
         label="Начало урока"
         placeholder="HH:MM"
         {...form.getInputProps("newStartTime")}
         withAsterisk
       />
-      <TextInput
+      <TimeInput
         label="Окончание урока"
         placeholder="HH:MM"
         {...form.getInputProps("newEndTime")}
         withAsterisk
       />
       <ReasonField form={form} />
-      <ScheduleButtonsActions onClose={onClose} />
+      <ScheduleButtonsActions text={"Отправить"} onClose={onClose} />
       <Dialog
         opened={dialog.open}
         onClose={() =>

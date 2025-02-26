@@ -10,11 +10,14 @@ import { useState } from "react";
 import VisibleForRoles from "~/shared/lib/components/visible-for-roles";
 import If from "~/shared/lib/components/if";
 import { EScheduleStatus } from "~/shared/enums/schedule-enum";
+import LessonItem from "~/features/lesson/ui/lesson-item";
+import ScheduleButtonEnd from "./schedule-button-end";
 const ScheduleCardForms = ({ schedule }: { schedule: TSchedule }) => {
   const { session } = useSession();
   const role = session?.data.role;
   const [isTransferFormOpen, setTransferFormOpen] = useState(false);
   const [isCancelFormOpen, setCancelFormOpen] = useState(false);
+  const [isAttachedLessonOpen, setIsAttachedLessonOpen] = useState(false);
   return (
     <>
       <Card
@@ -22,7 +25,7 @@ const ScheduleCardForms = ({ schedule }: { schedule: TSchedule }) => {
         padding="lg"
         radius="md"
         withBorder
-        className="max-h-[350px] overflow-y-auto"
+        className="max-h-[450px] overflow-y-auto"
       >
         <Stack className="overflow-y-auto">
           <Group>
@@ -38,6 +41,7 @@ const ScheduleCardForms = ({ schedule }: { schedule: TSchedule }) => {
               {schedule.startTime} - {schedule.endTime}
             </Text>
           </Group>
+          {schedule.lesson && <LessonItem lesson={schedule.lesson} />}
           <Flex
             direction={role === RoleEnum.EDUCATOR ? "column" : "row"}
             gap={role === RoleEnum.EDUCATOR ? "lg" : "sm"}
@@ -73,8 +77,22 @@ const ScheduleCardForms = ({ schedule }: { schedule: TSchedule }) => {
                 </Button>
               </VisibleForRoles>
               <Button color="red" onClick={() => setCancelFormOpen(true)}>
-                Запросить отмену
+                {role === RoleEnum.EDUCATOR ? "Запросить отмену" : "Отменить"}
               </Button>
+              <VisibleForRoles roles={[RoleEnum.EDUCATOR]}>
+                <Button
+                  onClick={() => setIsAttachedLessonOpen(true)}
+                  disabled={schedule.lessonId ? !!schedule.lessonId : false}
+                >
+                  Прикрепить урок
+                </Button>
+              </VisibleForRoles>
+              <VisibleForRoles roles={[RoleEnum.EDUCATOR]}>
+                <ScheduleButtonEnd
+                  date={schedule.dateLesson}
+                  scheduleId={schedule.id}
+                />
+              </VisibleForRoles>
             </Group>
           </If>
         </Stack>
@@ -85,6 +103,8 @@ const ScheduleCardForms = ({ schedule }: { schedule: TSchedule }) => {
         isCancelFormOpen={isCancelFormOpen}
         isTransferFormOpen={isTransferFormOpen}
         scheduleId={schedule.id}
+        isAttachedLessonOpen={isAttachedLessonOpen}
+        onCloseAttachedLesson={() => setIsAttachedLessonOpen(false)}
       />
     </>
   );

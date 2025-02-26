@@ -18,4 +18,15 @@ const getStudents = async (params: TParamsPage): Promise<TUser[]> => {
   );
   return data;
 };
-export const userApi = { getSelf, getEducators, createEducator, getStudents };
+const getUserByMyDirection = async (): Promise<TUser[]> => {
+  const { data } = await api.get("/user/direction/get-all");
+  return data;
+};
+
+export const userApi = {
+  getSelf,
+  getEducators,
+  createEducator,
+  getStudents,
+  getUserByMyDirection,
+};

@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { scheduleApi } from "../api/schedule.api";
 import {
+  TLessonToSchedule,
   TSchedule,
   TScheduleByStatus,
   TScheduleCreate,
@@ -202,6 +203,32 @@ const useUpdateCancelSchedule = () => {
     isPending,
   };
 };
+const useAttachLessonToSchedule = (onSuccess: () => void) => {
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["attach-lesson"],
+    mutationFn: (body: TLessonToSchedule) =>
+      scheduleApi.attachLessonToSchedule(body),
+    onSuccess: () => onSuccess(),
+  });
+  return {
+    mutate,
+    isPending,
+  };
+};
+const useUpdateScheduleEnd = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: scheduleApi.endSchedule,
+    mutationKey: ["end-schedule"],
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["get-schedule"] }),
+  });
+  return {
+    mutate,
+    isPending,
+  };
+};
 export const querySchedule = {
   useGetWorkingDays,
   useGetSchedule,
@@ -215,4 +242,6 @@ export const querySchedule = {
   useGetScheduleCancel,
   useUpdateCancelSchedule,
   useUpdateTransferSchedule,
+  useAttachLessonToSchedule,
+  useUpdateScheduleEnd,
 };

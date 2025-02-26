@@ -5,9 +5,12 @@ import { ChatType } from "~/shared/enums/chat-enum";
 import { useSession } from "~/shared/hooks/useSession";
 import { TUser } from "~/shared/types/user-type";
 
-export const useChatByEducator = (students?: TUser[]) => {
+export const useChatByEducator = (
+  onSuccess: () => void,
+  students?: TUser[]
+) => {
   const { chats } = useQueryMyChats();
-  const { form, submit } = useFormChat();
+  const { form, submit } = useFormChat(onSuccess);
   const { session } = useSession();
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(
     null

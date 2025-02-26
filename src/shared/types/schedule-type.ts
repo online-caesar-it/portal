@@ -2,6 +2,7 @@ import {
   EScheduleStatus,
   EScheduleTransferStatus,
 } from "../enums/schedule-enum";
+import { TLessonType, TMyLessonType } from "./lesson-type";
 import { TUser } from "./user-type";
 
 export type TScheduleDate = {
@@ -21,6 +22,7 @@ export type TSchedule = {
   userId: string;
   createdAt: string;
   directionId: string;
+  lesson: TLessonType | null;
 };
 export type TWorkingDays = number[];
 export type TWorkingTime = {
@@ -67,3 +69,5 @@ export type TScheduleTransferUpdate = {
   scheduleTransferId: string;
   status: EScheduleTransferStatus;
 };
+export type TLessonToSchedule = Pick<TMyLessonType, "lessonId"> &
+  TScheduleAttach;

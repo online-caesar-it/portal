@@ -1,10 +1,9 @@
-import { Modal, TextInput, Flex, Loader } from "@mantine/core";
+import { Modal, Flex, Loader } from "@mantine/core";
 
-import { useQueryMyStudents } from "~/entities/student/hooks/useQueryMyStudents";
-import { debounce } from "lodash";
-import { useCallback, useState } from "react";
 import If from "~/shared/lib/components/if";
 import ChatCreateForm from "./chat-create-form";
+import { useGetUsersByMyDirection } from "~/entities/direction/hooks/useQueryDirection";
+import { useSession } from "~/shared/hooks/useSession";
 
 const ChatCreateModal = ({
   show,
@@ -13,19 +12,20 @@ const ChatCreateModal = ({
   show: boolean;
   setShow: (value: boolean) => void;
 }) => {
-  const { search, setSearch, isLoading, students } = useQueryMyStudents();
-  const [localSearch, setLocalSearch] = useState(search);
-  const debouncedHandler = useCallback(
-    debounce((value: string) => {
-      setSearch(value);
-    }, 300),
-    [setSearch]
-  );
+  const { session } = useSession();
+  const { data, isLoading } = useGetUsersByMyDirection();
+  // const [localSearch, setLocalSearch] = useState(search);
+  // const debouncedHandler = useCallback(
+  //   debounce((value: string) => {
+  //     setSearch(value);
+  //   }, 300),
+  //   [setSearch]
+  // );
 
-  const handleInputChange = (value: string) => {
-    setLocalSearch(value);
-    debouncedHandler(value);
-  };
+  // const handleInputChange = (value: string) => {
+  //   setLocalSearch(value);
+  //   debouncedHandler(value);
+  // };
   return (
     <Modal
       radius={"lg"}
@@ -34,15 +34,19 @@ const ChatCreateModal = ({
       title="Выберите студента"
     >
       <Flex w={"100%"} direction={"column"} gap={10}>
-        <TextInput
+        {/* <TextInput
           radius={"lg"}
           value={localSearch}
           onChange={(e) => handleInputChange(e.target.value)}
           label="Найти студента"
           placeholder="Поиск"
-        />
+        /> */}
         <If when={!isLoading} elseComponent={<Loader />}>
-          <ChatCreateForm students={students?.data} />
+          <ChatCreateForm
+            close={() => setShow(false)}
+            students={data?.filter((it) => it.id !== session?.data.id)}
+            role={session?.data?.role ?? "student"}
+          />
         </If>
       </Flex>
     </Modal>

@@ -1,8 +1,9 @@
 import { chatApi } from "../api/chat.api";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "@mantine/form";
 
-export const useFormChat = () => {
+export const useFormChat = (onSuccess: () => void) => {
+  const queryClient = useQueryClient();
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -17,6 +18,10 @@ export const useFormChat = () => {
     mutationKey: ["create-chat"],
     mutationFn: () => {
       return chatApi.createChat(form.getValues());
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get-my-chats"] });
+      onSuccess();
     },
   });
   const submit = () => {

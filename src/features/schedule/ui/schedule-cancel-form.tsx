@@ -26,7 +26,7 @@ const ScheduleCancelForm = ({
   return (
     <form onSubmit={form.onSubmit(submit)}>
       <ReasonField form={form} />
-      <ScheduleButtonsActions onClose={onClose} />
+      <ScheduleButtonsActions text={"Отправить"} onClose={onClose} />
     </form>
   );
 };
